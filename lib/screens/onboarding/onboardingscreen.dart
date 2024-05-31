@@ -23,7 +23,7 @@ class OnboardingScreenState extends State<OnBoardingScreen> {
         },
         finishButtonTextStyle: TextStyle(fontSize: 16, color: Colors.white),
         headerBackgroundColor: Colors.white,
-        finishButtonText: 'Go Home',
+        finishButtonText: 'Start Exploring',
         finishButtonStyle: FinishButtonStyle(
           backgroundColor: Color(0xff6BCB89),
         ),
