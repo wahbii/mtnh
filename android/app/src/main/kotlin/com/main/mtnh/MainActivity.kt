@@ -1,4 +1,4 @@
-package com.example.mtnh
+package com.main.mtnh
 
 import io.flutter.embedding.android.FlutterActivity
 
