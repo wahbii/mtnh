@@ -2,6 +2,9 @@ import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_not
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import '../onboarding/views/policy_modal.dart';
+import '../settings/settings.dart';
+
 enum _MenuOptions {
   navigationDelegate,
   userAgent,
@@ -37,7 +40,7 @@ class HomeState extends State<HomeScreen> {
 
   /// widget list
   late List<Widget> bottomBarPages;
-
+  var currentIndex = 0 ;
   @override
   void initState() {
     // TODO: implement initState
@@ -57,7 +60,9 @@ class HomeState extends State<HomeScreen> {
       )
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..loadRequest(Uri.parse('https://mhtn.org/'));
+
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +119,7 @@ class HomeState extends State<HomeScreen> {
               Icons.search,
               color: Colors.white,
             ),
-            itemLabel: "Health",
+            itemLabel: "Search",
           ),
           BottomBarItem(
             inActiveItem: const Icon(
@@ -127,15 +132,36 @@ class HomeState extends State<HomeScreen> {
             ),
             itemLabel: "Help",
           ),
+          BottomBarItem(
+            inActiveItem: const Icon(
+              Icons.settings,
+              color: Colors.white,
+            ),
+            activeItem: const Icon(
+              Icons.settings,
+              color: Colors.white,
+            ),
+            itemLabel: "Settings",
+          ),
         ],
         onTap: (index) {
           /// perform action on tab change and to update pages you can update pages without pages
           //_pageController.jumpToPage(index);
-          controller.loadRequest(Uri.parse("${baseUrl}${listPath[index]}"));
+          setState(() {
+            currentIndex = index ;
+
+          });
+          if(currentIndex  != listPath.length ){
+            controller.loadRequest(Uri.parse("${baseUrl}${listPath[index]}"));
+          }
+
         },
         kIconSize: 24.0,
       ),
-      body: Stack(
+      body: currentIndex == listPath.length ? SettingScreen() : Container(
+        color: Colors.white,
+        margin: EdgeInsets.only(top: 20),
+      child:  Stack(
         children: [
           WebViewWidget(
             controller: controller,
@@ -148,6 +174,6 @@ class HomeState extends State<HomeScreen> {
             ),
         ],
       ),
-    );
+      ));
   }
 }

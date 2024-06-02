@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:mtnh/screens/home/homescreenn.dart';
 import 'package:mtnh/screens/onboarding/onboardingscreen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   static String path = "/";
@@ -13,11 +15,20 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   late Timer _timer;
   int _seconds = 0;
+  late SharedPreferences prefs;
+  var isfirstOpen = true;
+  Future<void> _initAsyncState() async {
+    prefs = await SharedPreferences.getInstance();
+    // Any other asynchronous initialization can be added here
+    isfirstOpen = prefs.getBool("firstOpen") ?? true;
+    prefs.setBool("firstOpen", false);
+  }
 
   @override
   void initState() {
     super.initState();
     _startTimer();
+    _initAsyncState();
   }
 
   @override
@@ -34,7 +45,10 @@ class _SplashScreenState extends State<SplashScreen> {
         if (_seconds == 5) {
           timer.cancel();
           // Navigate to another widget after 10 seconds
-          Navigator.pushReplacementNamed(context, OnBoardingScreen.path);
+          isfirstOpen ?
+           Navigator.pushReplacementNamed(context, OnBoardingScreen.path) :
+           Navigator.pushReplacementNamed(context, HomeScreen.path)
+          ;
         }
       });
     });

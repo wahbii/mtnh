@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_onboarding_slider/flutter_onboarding_slider.dart';
 import 'package:mtnh/screens/home/homescreenn.dart';
+import 'package:mtnh/screens/onboarding/views/policy_modal.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   static String path = "/onboarding";
@@ -19,7 +20,17 @@ class OnboardingScreenState extends State<OnBoardingScreen> {
     return Scaffold(
       body: OnBoardingSlider(
         onFinish: () {
-          Navigator.pushReplacementNamed(context, HomeScreen.path);
+
+            showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              backgroundColor: Colors.transparent,
+              builder: (context) => RulesModalDialog(
+                showBtn: true,
+                filname: "assets/pdf/disclamer.pdf",
+              ),
+            );
+
         },
         finishButtonTextStyle: TextStyle(fontSize: 16, color: Colors.white),
         headerBackgroundColor: Colors.white,
