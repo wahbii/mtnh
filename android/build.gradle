@@ -2,6 +2,11 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+
+        // // Zoho SalesIQ Mobilisten
+        // maven {
+        //     url 'https://maven.zohodl.com'
+        // }
     }
 }
 

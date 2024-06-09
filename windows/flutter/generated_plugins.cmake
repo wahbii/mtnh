@@ -3,7 +3,15 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  syncfusion_pdfviewer_windows
+  cloud_firestore
+  file_selector_windows
+  firebase_auth
+  firebase_core
+  flutter_localization
+  flutter_secure_storage_windows
+  local_auth_windows
+  permission_handler_windows
+  rive_common
   url_launcher_windows
 )
 
