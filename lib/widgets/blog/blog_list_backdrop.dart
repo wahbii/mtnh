@@ -6,13 +6,14 @@ import '../../common/constants.dart';
 import '../../common/tools.dart';
 import '../../generated/l10n.dart';
 import '../../models/index.dart' show Blog;
+import '../../models/posts/article_model.dart';
 import '../../modules/dynamic_layout/helper/helper.dart';
 import '../backdrop/backdrop_constants.dart';
 import 'blog_action_button_mixin.dart';
 import 'blog_card_view.dart';
 
 class BlogListBackdrop extends StatefulWidget {
-  final List<Blog>? blogs;
+  final  List<Article>? blog;
   final bool? isFetching;
   final bool? isEnd;
   final String? errMsg;
@@ -26,7 +27,7 @@ class BlogListBackdrop extends StatefulWidget {
     this.isFetching = false,
     this.isEnd = true,
     this.errMsg,
-    this.blogs,
+    this.blog,
     this.width,
     this.padding = 8.0,
     this.onRefresh,
@@ -43,13 +44,8 @@ class _BlogListBackdropState extends State<BlogListBackdrop>
   late RefreshController _refreshController;
   int _page = 1;
 
-  List<Blog> emptyList = const [
-    Blog.empty(1),
-    Blog.empty(2),
-    Blog.empty(3),
-    Blog.empty(4),
-    Blog.empty(5),
-    Blog.empty(6)
+  List<Article> emptyList = const [
+
   ];
 
   @override
@@ -79,7 +75,7 @@ class _BlogListBackdropState extends State<BlogListBackdrop>
   @override
   void didUpdateWidget(BlogListBackdrop oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.blogs != oldWidget.blogs) {
+    if (widget.blog != oldWidget.blog) {
       setState(() {});
     }
     if (widget.isFetching == false && oldWidget.isFetching == true) {
@@ -132,13 +128,10 @@ class _BlogListBackdropState extends State<BlogListBackdrop>
     final widthContent = itemSize.$1;
     final crossAxisCount = itemSize.$2;
 
-    final blogsList =
-        (widget.blogs == null || widget.blogs!.isEmpty) && widget.isFetching!
-            ? emptyList
-            : widget.blogs;
+    final List<Article>? blogsList = widget.blog;
 
     Widget typeList = const SizedBox();
-
+   print("hello : ${blogsList?.length}");
     if (blogsList == null || blogsList.isEmpty) {
       typeList = Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -185,7 +178,7 @@ class _BlogListBackdropState extends State<BlogListBackdrop>
     required int crossAxisCount,
     required double childAspectRatio,
     double? widthContent,
-    required List<Blog> blogsList,
+    required List<Article> blogsList,
   }) {
     return GridView.builder(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -199,28 +192,28 @@ class _BlogListBackdropState extends State<BlogListBackdrop>
           item: blogsList[i],
           width: widthContent,
           margin: 8.0,
-          onTap: () => onTapBlog(blog: blogsList[i], blogs: blogsList),
+          onTap: () => onTapBlog(article: blogsList[i],),
         );
       },
     );
   }
 
   Widget buildListView({
-    required List<Blog> blogs,
+    required List<Article> blogs,
     double? widthContent,
   }) {
     return ListView.builder(
       itemCount: blogs.length,
       itemBuilder: (_, index) => BlogCard(
         item: blogs[index],
-        width: widthContent,
-        onTap: () => onTapBlog(blog: blogs[index], blogs: blogs),
+        width: widthContent, onTap: () {  },
+       // onTap: () => onTapBlog(blog: blogs[index], blogs: blogs),
       ),
     );
   }
 
   Widget buildStaggeredGridView({
-    required List<Blog> blogs,
+    required List<Article> blogs,
     double? widthContent,
   }) {
     return MasonryGridView.count(
@@ -237,8 +230,8 @@ class _BlogListBackdropState extends State<BlogListBackdrop>
       itemCount: blogs.length,
       itemBuilder: (context, index) => BlogCard(
         item: blogs[index],
-        width: MediaQuery.of(context).size.width / 2,
-        onTap: () => onTapBlog(blog: blogs[index], blogs: blogs),
+        width: MediaQuery.of(context).size.width / 2, onTap: () {  },
+        //onTap: () => onTapBlog(blog: blogs[index], blogs: blogs),
       ),
       // staggeredTileBuilder: (index) => const StaggeredTile.fit(2),
     );

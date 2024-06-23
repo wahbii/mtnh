@@ -2,7 +2,7 @@ part of '../config.dart';
 
 class DefaultConfig {
   static String environment = '';
-  static String appName = 'Fluxstore';
+  static String appName = 'MHTN';
   static bool enableRemoteConfigFirebase = false;
   static bool enableFirebaseAnalytics = false;
   static bool enableFacebookAppEvents = false;
@@ -163,7 +163,7 @@ class DefaultConfig {
 
     'DownloadPageUrl': 'https://fluxstore.app/',
 
-    'AboutUSPageUrl': 'https://codecanyon.net/user/inspireui',
+    'AboutUSPageUrl': 'https://mhtn.org/contact-us/',
 
     'NewsPageUrl': 'https://products.inspireui.com/',
 
@@ -258,7 +258,19 @@ class DefaultConfig {
     'allowGetDatasByCategoryFilter': false,
   };
   static Map appRatingConfig = {};
-  static Map defaultDrawer = {};
+  static Map defaultDrawer = {
+
+      "logo": "assets/images/app_icon.png",
+      "background": null,
+      "items": [
+        {"type": "home", "show": true},
+        {"type": "Articles", "show": true},
+        {"type": "categories", "show": true},
+        {"type": "Archives Of Shows", "show": true},
+        {"type": "login", "show": true},
+      ]
+
+  };
   static List defaultSettings = [];
   static Map loginSetting = {};
   static Map oneSignalKey = {};
@@ -383,7 +395,7 @@ class DefaultConfig {
     //The link your app will open
     'link': 'https://mstore.io/',
     //----------* Android Setting *----------//
-    'androidPackageName': 'com.inspireui.fluxstore',
+    'androidPackageName': 'com.main.mhtn',
     'androidAppMinimumVersion': 1,
     //----------* iOS Setting *----------//
     'iOSBundleId': 'com.inspireui.mstore.flutter',

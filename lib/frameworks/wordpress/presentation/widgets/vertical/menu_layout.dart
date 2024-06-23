@@ -114,23 +114,6 @@ class _StateSelectLayout extends State<MenuLayout> {
       FutureBuilder<bool>(
         future: getAllListBlogs(categories: categories),
         builder: (context, check) {
-          if (blogs.isEmpty) {
-            return MasonryGridView.count(
-              crossAxisCount: 4,
-              key: Key(categories[position].id.toString()),
-              shrinkWrap: true,
-              controller: _controller,
-              itemCount: 4,
-              itemBuilder: (context, value) {
-                return BlogCard(
-                  item: Blog.empty(value),
-                  width: MediaQuery.of(context).size.width / 2,
-                  onTap: () {},
-                );
-              },
-              // staggeredTileBuilder: (index) => const StaggeredTile.fit(2),
-            );
-          }
           if (blogs[position].isEmpty) {
             return SizedBox(
               height: MediaQuery.of(context).size.width / 2,

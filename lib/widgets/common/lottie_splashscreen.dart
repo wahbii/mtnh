@@ -35,7 +35,7 @@ class _StateLottieSplashScreen extends State<LottieSplashScreen> {
     WidgetsBinding.instance.endOfFrame.then((_) {
       if (mounted) {
         Future.delayed(Duration(milliseconds: widget.duration), () {
-          widget.onSuccess?.call();
+         // widget.onSuccess?.call();
         });
       }
     });

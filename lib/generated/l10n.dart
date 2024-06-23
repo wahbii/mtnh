@@ -310,10 +310,10 @@ class S {
     );
   }
 
-  /// `My Wishlist`
+  /// `Bookmark`
   String get myWishList {
     return Intl.message(
-      'My Wishlist',
+      'Bookmark',
       name: 'myWishList',
       desc: '',
       args: [],

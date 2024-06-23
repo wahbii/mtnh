@@ -13,6 +13,7 @@ import '../../models/entities/filter_sorty_by.dart';
 import '../../models/entities/index.dart';
 import '../../models/index.dart'
     show Country, CountryState, ListCountry, User, UserModel;
+import '../../models/posts/article_model.dart';
 import '../../modules/dynamic_layout/config/blog_config.dart';
 import '../../screens/categories/layouts/side_menu_with_group.dart';
 import '../../screens/index.dart' hide SideMenuCategories, SubCategories;
@@ -167,10 +168,10 @@ class WordPressWidget extends BaseFrameworks {
   }
 
   @override
-  Widget renderSliderList(Map<String, dynamic>? config) {
+  Widget renderSliderList(List<MapEntry<String, List<Article>>>? config) {
     return HorizontalSliderList(
-      config: BlogConfig.fromJson(config ?? {}),
-      key: config?['key'] != null ? Key(config!['key']) : null,
+      config: config,
+      key:  null,
     );
   }
 

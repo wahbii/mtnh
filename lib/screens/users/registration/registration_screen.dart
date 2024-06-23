@@ -222,15 +222,12 @@ class _RegistrationScreenMobileState extends State<RegistrationScreenMobile> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: <Widget>[
                             const SizedBox(height: 10.0),
-                            Center(
-                              child: FractionallySizedBox(
-                                widthFactor: 0.8,
-                                child: FluxImage(
-                                  useExtendedImage: false,
-                                  imageUrl: themeConfig.logo,
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
+                            FluxImage(
+                              imageUrl: "https://static.mhtn.org/wp-content/uploads/2024/01/05200934/MENTAL-HEALTH-TV_LOGO_BLUE-02-2.png",
+                              fit: BoxFit.fill,
+                              useExtendedImage: true,
+                              width: 250,
+                              height: 180,
                             ),
                             const SizedBox(
                               height: 30.0,

@@ -145,8 +145,8 @@ class _BlogGridWebState extends BaseScreen<BlogGridWeb> {
                     onTap: () => FluxNavigate.pushNamed(
                       RouteList.detailBlog,
                       arguments: BlogDetailArguments(
-                        blog: blog,
-                        listBlog: listBlog.toList(),
+                        blog: null,
+
                       ),
                     ),
                   );

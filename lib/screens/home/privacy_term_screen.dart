@@ -33,7 +33,7 @@ class _PrivacyTermScreenState extends State<PrivacyTermScreen> {
   Widget build(BuildContext context) {
     final appConfig = Provider.of<AppModel>(context).appConfig;
     final script = kAdvanceConfig.webViewScript;
-    var pageUrl = appConfig?.privacyPoliciesPageUrl ??
+    var pageUrl = "https://mhtn.org/privacy-policy/";
         kAdvanceConfig.privacyPoliciesPageUrl;
     final pageId = appConfig?.privacyPoliciesPageId ??
         kAdvanceConfig.privacyPoliciesPageId;

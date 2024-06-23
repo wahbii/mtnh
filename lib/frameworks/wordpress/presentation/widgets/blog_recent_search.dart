@@ -16,6 +16,7 @@ class BlogRecentSearch extends StatelessWidget {
     final screenSize = MediaQuery.of(context).size;
     final widthContent = (screenSize.width / 2) - 4;
 
+
     return ListenableProvider.value(
       value: Provider.of<BlogSearchModel>(context, listen: false),
       child: Consumer<BlogSearchModel>(builder: (context, model, child) {

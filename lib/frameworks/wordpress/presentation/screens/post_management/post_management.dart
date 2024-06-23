@@ -165,10 +165,9 @@ class _PostManagementScreenState extends BaseScreen<PostManagementScreen> {
                           controller: ScrollController(),
                           child: ListView.builder(
                             itemCount: snapshot.data!.length,
-                            itemBuilder: (_, index) => PostView(
-                              blogs: snapshot.data,
-                              index: index,
-                            ),
+                            itemBuilder: (_, index) {
+
+                            },
                           ),
                         ),
                       );

@@ -17,7 +17,7 @@ class RecentlyViewedBlogs extends StatelessWidget with BlogActionButtonMixin {
         return ListenableProvider.value(
           value: Provider.of<BlogSearchModel>(context, listen: false),
           child: Consumer<BlogSearchModel>(builder: (context, model, child) {
-            var recentBlogs = model.recentBlogs;
+            var recentBlogs = [];
 
             if (recentBlogs.isEmpty) {
               return const SizedBox();
@@ -62,8 +62,9 @@ class RecentlyViewedBlogs extends StatelessWidget with BlogActionButtonMixin {
                           BlogCard(
                             item: item,
                             width: screenWidth * 0.35,
-                            onTap: () =>
-                                onTapBlog(blog: item, blogs: recentBlogs),
+                            onTap: () {
+
+                            },
                           )
                       ],
                     ),

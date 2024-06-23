@@ -122,6 +122,6 @@
   ],
   "SplashScreen": {
     "type": "animated",
-    "data": "assets/images/splashscreen.png"
+    "data": "assets/images/app_icon.png"
   }
 }

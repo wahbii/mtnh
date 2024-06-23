@@ -11,6 +11,8 @@ import '../common/tools.dart';
 import '../generated/l10n.dart';
 import '../models/index.dart'
     show AppModel, BackDropArguments, Category, CategoryModel, UserModel;
+import '../models/posts/article_model.dart';
+import '../models/posts/article_provider.dart';
 import '../modules/dynamic_layout/config/app_config.dart';
 import '../modules/dynamic_layout/helper/helper.dart';
 import '../routes/flux_navigate.dart';
@@ -70,7 +72,7 @@ class MenuBarState extends State<SideBarMenu> {
     var isDarkTheme = Provider.of<AppModel>(context, listen: false).darkTheme;
     var logo = drawer.getLogoByTheme(isDarkTheme);
 
-    printLog('[AppState] Load Menu');
+    printLog('[AppState] Load Menu 1');
 
     return SafeArea(
       top: drawer.safeArea,
@@ -97,11 +99,9 @@ class MenuBarState extends State<SideBarMenu> {
                     right: drawer.logoConfig.marginRight.toDouble(),
                   ),
                   child: FluxImage(
-                    width: drawer.logoConfig.useMaxWidth
-                        ? MediaQuery.of(context).size.width
-                        : drawer.logoConfig.width?.toDouble(),
-                    fit: Helper.boxFit(drawer.logoConfig.boxFit),
-                    height: drawer.logoConfig.height.toDouble(),
+                    width: 150,
+                    fit: BoxFit.fill,
+                    height: 80,
                     imageUrl: logo,
                   ),
                 ),
@@ -111,6 +111,7 @@ class MenuBarState extends State<SideBarMenu> {
                 drawer.items?.length ?? 0,
                 (index) {
                   return drawerItem(
+                    drawer.items![index].type ?? "",
                     drawer.items![index],
                     drawer.subDrawerItem ?? {},
                   );
@@ -127,6 +128,7 @@ class MenuBarState extends State<SideBarMenu> {
   }
 
   Widget drawerItem(
+     String title ,
     DrawerItemsConfig drawerItemConfig,
     Map<String, GeneralSettingItem> subDrawerItem,
   ) {
@@ -143,7 +145,7 @@ class MenuBarState extends State<SideBarMenu> {
               color: iconColor,
             ),
             title: Text(
-              isEcommercePlatform ? S.of(context).home : S.of(context).shop,
+              title,
               style: textStyle,
             ),
             onTap: () {
@@ -160,7 +162,7 @@ class MenuBarState extends State<SideBarMenu> {
               color: iconColor,
             ),
             title: Text(
-              S.of(context).categories,
+              title,
               style: textStyle,
             ),
             onTap: () => pushNavigator(
@@ -170,77 +172,39 @@ class MenuBarState extends State<SideBarMenu> {
             ),
           );
         }
-      case 'cart':
+      case 'Articles':
         {
-          if ((!Services().widget.enableShoppingCart(null)) ||
-              ServerConfig().isListingType) {
-            return const SizedBox();
-          }
+
           return ListTile(
             leading: Icon(
-              Icons.shopping_cart,
+              Icons.article_sharp,
               size: 20,
               color: iconColor,
             ),
             title: Text(
-              S.of(context).cart,
+              title,
               style: textStyle,
             ),
             onTap: () => pushNavigator(name: RouteList.cart),
           );
         }
-      case 'profile':
+      case 'Archives Of Shows':
         {
           return ListTile(
             leading: Icon(
-              Icons.person,
+              Icons.archive,
               size: 20,
               color: iconColor,
             ),
             title: Text(
-              S.of(context).settings,
+              title,
               style: textStyle,
             ),
             onTap: () => pushNavigator(name: RouteList.profile),
           );
         }
-      case 'web':
-        {
-          return ListTile(
-            leading: Icon(
-              Icons.web,
-              size: 20,
-              color: iconColor,
-            ),
-            title: Text(
-              S.of(context).webView,
-              style: textStyle,
-            ),
-            onTap: () {
-              pushNavigator(
-                screen: WebView(
-                  url: 'https://inspireui.com',
-                  title: S.of(context).webView,
-                ),
-              );
-            },
-          );
-        }
-      case 'blog':
-        {
-          return ListTile(
-            leading: Icon(
-              CupertinoIcons.news_solid,
-              size: 20,
-              color: iconColor,
-            ),
-            title: Text(
-              S.of(context).blog,
-              style: textStyle,
-            ),
-            onTap: () => pushNavigator(name: RouteList.listBlog),
-          );
-        }
+
+
       case 'login':
         {
           return ListenableProvider.value(
@@ -280,7 +244,11 @@ class MenuBarState extends State<SideBarMenu> {
         }
       case 'category':
         {
-          return buildListCategory();
+          return buildListCategory("By $title",context.read<ArticleNotifier>().getDataByCat());
+        }
+      case 'shows':
+        {
+          return buildListCategory("By $title",[]);
         }
       default:
         {
@@ -369,7 +337,7 @@ class MenuBarState extends State<SideBarMenu> {
     }
   }
 
-  Widget buildListCategory() {
+  Widget buildListCategory( String title ,List<MapEntry<String, List<Article>>> data) {
     return Selector<CategoryModel, List<Category>?>(
       shouldRebuild: (previous, next) {
         return previous != next;
@@ -379,13 +347,11 @@ class MenuBarState extends State<SideBarMenu> {
         var widgets = <Widget>[];
 
         if (categories != null) {
-          var list = categories.where((item) => item.isRoot).toList();
+          var list = data;
           for (var i = 0; i < list.length; i++) {
-            final currentCategory = list[i];
-            final childCategories = categories
-                .where((o) => o.parent == currentCategory.id)
-                .toList();
-            final categoryName = currentCategory.name?.toUpperCase() ?? '';
+            final currentCategory = list[i].key;
+
+            final categoryName = currentCategory.toUpperCase() ?? '';
 
             widgets.add(Container(
               color: i.isOdd
@@ -393,9 +359,11 @@ class MenuBarState extends State<SideBarMenu> {
                   : Theme.of(context).colorScheme.secondary.withOpacity(0.1),
 
               /// Check to add only parent link category
-              child: childCategories.isEmpty
+              child: data.isEmpty
                   ? InkWell(
-                      onTap: () => navigateToBackDrop(currentCategory),
+                      onTap: () =>{
+                        //navigateToBackDrop(currentCategory),
+                      },
                       child: Padding(
                         padding: const EdgeInsets.only(
                           right: 20,
@@ -412,35 +380,30 @@ class MenuBarState extends State<SideBarMenu> {
                               style: textStyle,
                             )),
                             const SizedBox(width: 24),
-                            currentCategory.totalProduct == null
-                                ? const Icon(Icons.chevron_right)
-                                : Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 10),
-                                    child: Text(
-                                      S.of(context).nItems(
-                                          currentCategory.totalProduct!),
-                                      style: textStyle.copyWith(fontSize: 12),
-                                    ),
-                                  ),
+                           const Icon(Icons.chevron_right)
+
                           ],
                         ),
                       ),
                     )
-                  : ExpansionTile(
-                      title: Padding(
-                        padding: const EdgeInsets.only(left: 0.0, top: 0),
-                        child: Text(
-                          categoryName,
-                          style: textStyle.copyWith(fontSize: 14),
-                        ),
-                      ),
-                      iconColor: iconColor,
-                      collapsedIconColor: textColor,
-                      children: getChildren(
-                              categories, currentCategory, childCategories)
-                          as List<Widget>,
-                    ),
+                  : InkWell(child: ListTile(
+                title: Padding(
+                  padding: const EdgeInsets.only(left: 0.0, top: 0),
+                  child: Text(
+                    categoryName,
+                    style: textStyle.copyWith(fontSize: 14),
+                  ),
+
+                ),
+              ),onTap: (){
+                FluxNavigate.pushNamed(
+                  RouteList.backdrop,
+                  arguments: BackDropArguments(
+                      data: list[i].value,
+                      title: list[i].key
+                  ),
+                );
+              },),
             ));
           }
         }
@@ -450,7 +413,7 @@ class MenuBarState extends State<SideBarMenu> {
           expandedCrossAxisAlignment: CrossAxisAlignment.start,
           tilePadding: const EdgeInsets.only(left: 16, right: 8),
           title: Text(
-            S.of(context).byCategory.toUpperCase(),
+            title,
             style: textStyle.copyWith(
               fontSize: 14,
               fontWeight: FontWeight.w600,

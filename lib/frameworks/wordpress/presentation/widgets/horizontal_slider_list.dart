@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:html/parser.dart';
 import 'package:inspireui/inspireui.dart';
+import 'package:intl/intl.dart' as it;
 
 import '../../../../common/constants.dart';
 import '../../../../models/index.dart';
-import '../../../../modules/dynamic_layout/config/blog_config.dart';
+import '../../../../models/posts/article_model.dart';
 import '../../../../modules/dynamic_layout/helper/header_view.dart';
 import '../../../../routes/flux_navigate.dart';
-import '../../../../services/services.dart';
 import '../../../../widgets/blog/blog_action_button_mixin.dart';
-import '../../../../widgets/common/auto_silde_show.dart';
 import '../../../../widgets/common/background_color_widget.dart';
 import '../../../../widgets/common/index.dart' show FluxImage;
 
 class HorizontalSliderList extends StatefulWidget {
-  final BlogConfig config;
+  final List<MapEntry<String, List<Article>>>? config;
 
   const HorizontalSliderList({required this.config, super.key});
 
@@ -24,19 +22,18 @@ class HorizontalSliderList extends StatefulWidget {
 
 class _HorizontalSliderListState extends State<HorizontalSliderList>
     with BlogActionButtonMixin {
-  final Services _service = Services();
-  final _listBlogNotifier = ValueNotifier<List<Blog>?>(null);
+  final _listBlogNotifier =
+      ValueNotifier<List<MapEntry<String, List<Article>>>?>(null);
   final _pageController = PageController();
 
-  Map get configJson => widget.config.toJson();
+  List<MapEntry<String, List<Article>>>? get configJson => widget.config;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.endOfFrame.then((_) async {
       if (mounted) {
-        final data = await _service.api.fetchBlogLayout(config: configJson);
-        _listBlogNotifier.value = data ?? [];
+        _listBlogNotifier.value = configJson;
       }
     });
   }
@@ -53,106 +50,51 @@ class _HorizontalSliderListState extends State<HorizontalSliderList>
   @override
   Widget build(BuildContext context) {
     final config = widget.config;
-    final isRecent = config.layout == 'recentView' ? true : false;
-    final enableBackground = config.enableBackground == true;
+    final isRecent = false;
+    final enableBackground = true;
 
-    int buildItemCount(List<Blog>? list, int itemNumber) {
-      if (list == null) {
-        return itemNumber;
-      } else if (list.length % itemNumber == 0) {
-        // ignore: unnecessary_parenthesis
-        return (list.length ~/ itemNumber);
-      } else {
-        return (list.length ~/ itemNumber) + 1;
-      }
-    }
+
 
     return BackgroundColorWidget(
       enable: enableBackground,
-      child: ValueListenableBuilder<List<Blog>?>(
+      child: ValueListenableBuilder<List<MapEntry<String, List<Article>>>?>(
         valueListenable: _listBlogNotifier,
         builder: (context, value, child) {
-          // Is Loading
-          final direction = config.type == 'imageOnTheRight'
-              ? TextDirection.rtl
-              : TextDirection.ltr;
-
-          var body = PageView.builder(
-            itemCount: buildItemCount(value, 3),
-            controller: _pageController,
-            itemBuilder: (context, index) {
-              final data = value!.skip(index * 3).take(3);
-              return Padding(
-                padding: const EdgeInsets.only(right: 4.0),
-                child: Column(
-                  children: <Widget>[
-                    for (var blog in data)
-                      Expanded(
-                        child: _BlogItem(
-                          blog: blog,
-                          type: config.type,
-                          imageBorder: config.imageBorder,
-                          onTap: () => onTapBlog(blog: blog, blogs: value),
-                        ),
+          var body = Column(
+            children: value!.map((section) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  HeaderView(
+                    headerText: section.key,
+                    showSeeAll: isRecent ? false : true,
+                    verticalMargin: 4,
+                    callback: () => FluxNavigate.pushNamed(
+                      RouteList.backdrop,
+                      arguments: BackDropArguments(
+                        data: section.value,
+                        title: section.key
                       ),
-                  ],
-                ),
-              );
-            },
-          );
-
-          if (value == null) {
-            return Column(
-              children: <Widget>[
-                HeaderView(
-                  headerText: config.name ?? ' ',
-                  verticalMargin: 4,
-                  showSeeAll: isRecent ? false : true,
-                  callback: () => FluxNavigate.pushNamed(
-                    RouteList.backdrop,
-                    arguments: BackDropArguments(
-                      config: configJson,
-                      data: null,
                     ),
                   ),
-                ),
-                ...List.filled(
-                  3,
-                  _SliderListItemSkeleton(textDirection: direction),
-                ),
-              ],
-            );
-          }
+                  Column(
+                    children: section.value.take(3).map((article) {
+                      return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4.0),
+                          child: _BlogItem(
+                            blog: article,
+                            type: "imageOnTheRight",
+                            imageBorder: 12.0,
+                            onTap: () => onTapBlog(article: article, ),
 
-          return Column(
-            children: <Widget>[
-              HeaderView(
-                headerText: config.name ?? ' ',
-                showSeeAll: isRecent ? false : true,
-                verticalMargin: 4,
-                callback: () => FluxNavigate.pushNamed(
-                  RouteList.backdrop,
-                  arguments: BackDropArguments(
-                    config: configJson,
-                    data: value,
+                          ));
+                    }).toList(),
                   ),
-                ),
-              ),
-              value.isEmpty
-                  ? const SizedBox(height: 200)
-                  : Container(
-                      padding: const EdgeInsets.only(left: 10),
-                      height: 520,
-                      child: HandleAutoSlide.page(
-                        enable: config.enableAutoSliding == true,
-                        durationAutoSliding: config.durationAutoSliding,
-                        numberOfItems: buildItemCount(value, 3),
-                        controller: _pageController,
-                        child: body,
-                      ),
-                    )
-            ],
+                ],
+              );
+            }).toList(),
           );
+          return body;
         },
       ),
     );
@@ -160,7 +102,7 @@ class _HorizontalSliderListState extends State<HorizontalSliderList>
 }
 
 class _BlogItem extends StatelessWidget {
-  final Blog blog;
+  final Article blog;
   final String? type;
   final double? imageBorder;
   final onTap;
@@ -174,9 +116,9 @@ class _BlogItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final direction =
-        type == 'imageOnTheRight' ? TextDirection.rtl : TextDirection.ltr;
-    return Padding(
+    const direction = TextDirection.ltr;
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.14,
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 6.0),
       child: GestureDetector(
         onTap: onTap,
@@ -186,16 +128,16 @@ class _BlogItem extends StatelessWidget {
           textDirection: direction,
           children: <Widget>[
             Expanded(
-              flex: 4,
+              flex: 5,
               child: ClipRRect(
                 borderRadius: BorderRadius.all(
                   Radius.circular(imageBorder ?? 0),
                 ),
                 child: AspectRatio(
-                  aspectRatio: 1.0,
+                  aspectRatio: 16/9,
                   child: FluxImage(
-                    imageUrl: blog.imageFeature,
-                    fit: BoxFit.cover,
+                    imageUrl: blog.mrssThumbnail,
+                    fit: BoxFit.contain,
                   ),
                 ),
               ),
@@ -207,9 +149,9 @@ class _BlogItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    blog.title,
+                    blog.sanitizedTitle,
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 12,
                       fontWeight: FontWeight.w800,
                       color: Theme.of(context).colorScheme.secondary,
                     ),
@@ -218,18 +160,22 @@ class _BlogItem extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    blog.date,
+
+                       it.DateFormat('d MMMM yyyy').format(blog.date)
+                    ,
                     textAlign: TextAlign.right,
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.secondary,
+                      fontSize: 10,
                     ),
                   ),
-                  const SizedBox(height: 10),
                   Text(
-                    parse(blog.excerpt).documentElement!.text,
+                    blog.sanitizedExcerpt
+                        .replaceAll("<p>", "")
+                        .replaceAll("</p>", ""),
                     maxLines: 3,
                     style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                        fontSize: 13.0,
+                        fontSize: 10.0,
                         height: 1.4,
                         color: Theme.of(context).colorScheme.secondary),
                   ),

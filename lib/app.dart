@@ -24,6 +24,9 @@ import 'models/category/category_model_impl.dart';
 import 'models/category/main_category_model.dart';
 import 'models/entities/seo/meta_seo.dart';
 import 'models/index.dart';
+import 'models/posts/article_detail_provider.dart';
+import 'models/posts/article_provider.dart';
+import 'models/posts/search_provider.dart';
 import 'models/tera_wallet/wallet_model.dart';
 import 'modules/dynamic_layout/config/app_config.dart';
 import 'modules/meta_seo/meta_seo_service.dart';
@@ -397,6 +400,9 @@ class AppState extends State<App>
             textDirection: TextDirection.rtl,
             child: MultiProvider(
               providers: [
+                ChangeNotifierProvider(create: (_) => ArticleDetailNotifier()),
+                ChangeNotifierProvider(create: (_) => SearchNotifier()),
+                ChangeNotifierProvider(create: (_) => ArticleNotifier()),
                 Provider<ProductModel>.value(value: _product),
                 ChangeNotifierProvider<ProductWishListModel>.value(
                     value: _wishlist),

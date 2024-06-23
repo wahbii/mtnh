@@ -129,7 +129,7 @@ class _LargeCardHorizontalListItemsState
                                   context: context,
                                   onTap: () {
                                     final data = snapshot.data ?? [];
-                                    onTapBlog(blog: data[index], blogs: data);
+                                   // onTapBlog(article: data[index]);
                                   },
                                   //isHero: true,
                                 );

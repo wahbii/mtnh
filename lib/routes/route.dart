@@ -19,6 +19,7 @@ import '../models/index.dart'
         ProductModel,
         User,
         UserModel;
+import '../models/posts/article_model.dart';
 import '../models/search_web_model.dart';
 import '../modules/dynamic_layout/geo_search/geo_search_screen.dart';
 import '../modules/dynamic_layout/helper/helper.dart';
@@ -118,10 +119,12 @@ class Routes {
             );
 
             return _buildRoute(routeSetting, (context) {
+              final data = arguments.data;
               final cateId = arguments.cateId;
               final cateName = arguments.cateName;
               final tag = arguments.tag;
               final blogs = arguments.data?.cast<Blog>();
+              final title = arguments.title ;
               final config = arguments.config;
               final blogConfig = config != null
                   ? BlogConfig.fromJson(config)
@@ -138,7 +141,8 @@ class Routes {
               if (blogModel.tagIds != blogConfig.tag) {
                 blogModel.tagIds = null;
               }
-              return BlogsPage(blogs: blogs, config: blogConfig);
+              print("hello 2 : ${data?.length}");
+              return BlogsPage(blogs: data as List<Article>?, config: blogConfig,title: title,);
             });
           }
 
@@ -346,7 +350,6 @@ class Routes {
             (_) => BlogDetailScreen(
               blog: arguments.blog,
               id: arguments.id,
-              listBlog: arguments.listBlog,
             ),
           );
         }
@@ -491,7 +494,7 @@ class Routes {
           return _buildRoute(
             settings,
             (context) => StoryWidget(
-              config: data as Map<String, dynamic>,
+              articles: data as List<Article>,
               isFullScreen: true,
             ),
           );

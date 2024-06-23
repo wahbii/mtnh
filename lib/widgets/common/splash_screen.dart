@@ -32,7 +32,7 @@ class SplashScreenIndex extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (kSplashScreen.enable) {
+
       final boxFit = ImageTools.boxFit(
         kSplashScreen.boxFit,
         defaultValue: BoxFit.contain,
@@ -42,66 +42,9 @@ class SplashScreenIndex extends StatelessWidget {
       final paddingBottom = kSplashScreen.paddingBottom;
       final paddingLeft = kSplashScreen.paddingLeft;
       final paddingRight = kSplashScreen.paddingRight;
-      switch (splashScreenType) {
-        case SplashScreenTypeConstants.rive:
-          var animationName = kSplashScreen.animationName;
-          return RiveSplashScreen(
-            onSuccess: actionDone,
-            imageUrl: imageUrl,
-            animationName: animationName ?? 'fluxstore',
-            duration: duration,
-            backgroundColor: backgroundColor,
-            boxFit: boxFit,
-            paddingTop: paddingTop,
-            paddingBottom: paddingBottom,
-            paddingLeft: paddingLeft,
-            paddingRight: paddingRight,
-          );
-        case SplashScreenTypeConstants.flare:
-          return SplashScreen.navigate(
-            name: imageUrl,
-            startAnimation: kSplashScreen.animationName,
-            backgroundColor: backgroundColor,
-            boxFit: boxFit,
-            paddingTop: paddingTop,
-            paddingBottom: paddingBottom,
-            paddingLeft: paddingLeft,
-            paddingRight: paddingRight,
-            next: actionDone,
-            until: () => Future.delayed(Duration(milliseconds: duration)),
-          );
-        case SplashScreenTypeConstants.lottie:
-          return LottieSplashScreen(
-            imageUrl: imageUrl,
-            onSuccess: actionDone,
-            duration: duration,
-            backgroundColor: backgroundColor,
-            boxFit: boxFit,
-            paddingTop: paddingTop,
-            paddingBottom: paddingBottom,
-            paddingLeft: paddingLeft,
-            paddingRight: paddingRight,
-          );
-        case SplashScreenTypeConstants.fadeIn:
-        case SplashScreenTypeConstants.topDown:
-        case SplashScreenTypeConstants.zoomIn:
-        case SplashScreenTypeConstants.zoomOut:
-          return AnimatedSplash(
-            imagePath: imageUrl,
-            animationEffect: splashScreenType,
-            next: actionDone,
-            duration: duration,
-            backgroundColor: backgroundColor,
-            boxFit: boxFit,
-            paddingTop: paddingTop,
-            paddingBottom: paddingBottom,
-            paddingLeft: paddingLeft,
-            paddingRight: paddingRight,
-          );
-        case SplashScreenTypeConstants.static:
-        default:
+
           return StaticSplashScreen(
-            imagePath: imageUrl,
+            imagePath: "assets/images/MHTNLOGOFINAL.svg",
             onNextScreen: actionDone,
             duration: duration,
             backgroundColor: backgroundColor,
@@ -111,14 +54,11 @@ class SplashScreenIndex extends StatelessWidget {
             paddingLeft: paddingLeft,
             paddingRight: paddingRight,
           );
-      }
-    } else {
-      return _EmptySplashScreen(
-        onNextScreen: actionDone,
-        isLoadAppConfig: isLoadAppConfig,
-      );
-    }
+
+
+
   }
+
 }
 
 class _EmptySplashScreen extends StatefulWidget {

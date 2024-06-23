@@ -95,10 +95,10 @@ class _RelatedBlogListState extends State<RelatedBlogList> {
                         radius: 8.0,
                         onTap: () => FluxNavigate.pushNamed(
                           RouteList.detailBlog,
-                          arguments: BlogDetailArguments(
+                        /*  arguments: BlogDetailArguments(
                             blog: blog,
                             listBlog: listBlog.toList(),
-                          ),
+                          ),*/
                         ),
                         config: BlogConfig(),
                       );
@@ -224,10 +224,10 @@ class _BlogItem extends StatelessWidget {
         Navigator.pushNamed(
           context,
           RouteList.detailBlog,
-          arguments: BlogDetailArguments(
+         /* arguments: BlogDetailArguments(
             blog: blogs[index],
             listBlog: blogs,
-          ),
+          ),*/
         );
       },
       child: Container(

@@ -100,10 +100,10 @@ mixin DetailedBlogMixin {
               LoadingHelper.hide();
               return false;
             }
-            await FluxNavigate.pushNamed(
+            /*await FluxNavigate.pushNamed(
               RouteList.detailBlog,
               arguments: BlogDetailArguments(blog: blog),
-            );
+            );*/
             LoadingHelper.hide();
             return true;
           },

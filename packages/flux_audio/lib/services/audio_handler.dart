@@ -10,7 +10,7 @@ Future<AudioHandler> initAudioService() async {
   return await AudioService.init(
     builder: MyAudioHandler.new,
     config: const AudioServiceConfig(
-      androidNotificationChannelId: 'com.inspireui.fluxstore',
+      androidNotificationChannelId: 'com.main.mhtn',
       androidNotificationChannelName: 'Audio Service',
       androidNotificationOngoing: true,
       androidStopForegroundOnPause: true,

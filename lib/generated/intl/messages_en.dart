@@ -816,7 +816,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "myProductsEmpty": MessageLookupByLibrary.simpleMessage(
             "You don\'t have any products. Try to create one!"),
         "myWallet": MessageLookupByLibrary.simpleMessage("My Wallet"),
-        "myWishList": MessageLookupByLibrary.simpleMessage("My Wishlist"),
+        "myWishList": MessageLookupByLibrary.simpleMessage("Bookmark"),
         "nItems": m28,
         "name": MessageLookupByLibrary.simpleMessage("Name"),
         "nameOnCard": MessageLookupByLibrary.simpleMessage("Name On Card"),

@@ -114,10 +114,7 @@ class _AppBarSettingWidgetState extends State<AppBarSettingWidget>
               fontWeight: FontWeight.w600,
             ),
           ),
-          background: FluxImage(
-            imageUrl: background,
-            fit: BoxFit.cover,
-          ),
+
         ),
         actions: _renderActions(),
       );

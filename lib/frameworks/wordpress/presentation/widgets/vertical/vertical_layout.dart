@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 import '../../../../../common/tools.dart';
 import '../../../../../generated/l10n.dart';
+import '../../../../../models/posts/article_model.dart';
+import '../../../../../models/posts/article_provider.dart';
 import '../../../../../modules/dynamic_layout/config/blog_config.dart';
 import '../../../../../screens/blog/index.dart';
 import '../../../../../services/index.dart';
@@ -22,7 +25,7 @@ class VerticalViewLayout extends StatefulWidget {
 class _VerticalViewLayoutState extends State<VerticalViewLayout>
     with BlogActionButtonMixin {
   final Services _service = Services();
-  List<Blog> _blogs = [];
+  List<Article> _blogs = [];
   int _page = 0;
   bool canLoad = true;
   BlogCardType get type => widget.config.cardDesign;
@@ -30,25 +33,10 @@ class _VerticalViewLayoutState extends State<VerticalViewLayout>
   @override
   void initState() {
     super.initState();
-    _loadProduct();
+    _blogs = context.read<ArticleNotifier>().articles ;
   }
 
-  Future<void> _loadProduct() async {
-    var config = widget.config.toJson();
-    _page = _page + 1;
-    config['page'] = _page;
-    if (!canLoad) return;
-    var newBlogs = await _service.api.fetchBlogLayout(config: config);
-    if (newBlogs?.isEmpty ?? true) {
-      setState(() {
-        canLoad = false;
-      });
-    } else {
-      setState(() {
-        _blogs = [..._blogs, ...newBlogs!];
-      });
-    }
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +64,6 @@ class _VerticalViewLayoutState extends State<VerticalViewLayout>
               return SimpleListView(
                 item: _blogs[i],
                 type: SimpleListType.backgroundColor,
-                listBlog: _blogs,
               );
             }
             return BlogCard(
@@ -84,23 +71,11 @@ class _VerticalViewLayoutState extends State<VerticalViewLayout>
               width: widthContent,
               config: widget.config,
               onTap: () {
-                if (_blogs[i].imageFeature == '') return;
-                onTapBlog(blog: _blogs[i], blogs: _blogs);
+                onTapBlog(article: _blogs[i], );
               },
             );
           }),
-          VisibilityDetector(
-            key: const Key('loading_vertical'),
-            onVisibilityChanged: (VisibilityInfo info) => _loadProduct(),
-            child: (!canLoad)
-                ? const SizedBox()
-                : Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Center(
-                      child: Text(S.of(context).loading),
-                    ),
-                  ),
-          ),
+
         ]),
       ),
     );

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../../../common/constants.dart';
+import '../../../models/posts/article_model.dart';
 import '../../../routes/flux_navigate.dart';
+import '../../../screens/blog/views/blog_detail_screen.dart';
 import '../helper/header_view.dart';
 import 'models/story_config.dart';
 import 'story_card.dart';
@@ -9,12 +12,12 @@ import 'story_constants.dart';
 
 class StoryWidget extends StatefulWidget {
   final bool isFullScreen;
-  final Map<String, dynamic> config;
+  final List<Article> articles;
   final bool showChat;
 
   const StoryWidget({
     super.key,
-    required this.config,
+    required this.articles,
     this.isFullScreen = false,
     this.showChat = false,
   });
@@ -24,18 +27,18 @@ class StoryWidget extends StatefulWidget {
 }
 
 class _StoryWidgetState extends State<StoryWidget> {
-  StoryConfig get _storyConfig => StoryConfig.fromJson(widget.config);
+  List<Article> get _storyConfig => widget.articles;
 
   List<StoryCard> renderListStoryCard(
       {double? ratioWidth, double? ratioHeight}) {
     var items = <StoryCard>[];
-    for (var item in _storyConfig.data ?? []) {
+    for (var item in _storyConfig ?? []) {
       items.add(
         StoryCard(
           story: item,
           key: UniqueKey(),
-          ratioWidth: ratioWidth,
-          ratioHeight: ratioHeight,
+          ratioWidth: 16,
+          ratioHeight: 9,
           buildContext: context,
         ),
       );
@@ -45,15 +48,13 @@ class _StoryWidgetState extends State<StoryWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (_storyConfig.active == false) {
-      return const SizedBox();
-    }
+
 
     if (widget.isFullScreen) {
       return StoryCollection(
         listStory: renderListStoryCard(),
         pageCurrent: 0,
-        isHorizontal: _storyConfig.isHorizontal,
+        isHorizontal: true,
         showChat: widget.showChat,
         isTab: true,
       );
@@ -67,25 +68,17 @@ class _StoryWidgetState extends State<StoryWidget> {
     final screenSize = MediaQuery.of(context).size;
     return LayoutBuilder(
       builder: (context, constraint) {
-        final widthItem = (constraint.maxWidth -
-                (StoryConstants.spaceBetweenStory *
-                    _storyConfig.countColumn!)) /
-            _storyConfig.countColumn!;
-        final heightItem = StoryConstants.aspectRatio * widthItem - 10;
+
         var listStoryCard = renderListStoryCard(
-          ratioWidth: screenSize.width / widthItem,
-          ratioHeight: screenSize.height / heightItem,
+          ratioWidth: screenSize.width ,
+          ratioHeight: screenSize.height,
         );
         return Container(
-          color: _storyConfig.enableBackground
-              ? Theme.of(context).colorScheme.surface
-              : Colors.transparent,
+          color: Theme.of(context).colorScheme.surface,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              HeaderView(
-                headerText: _storyConfig.name ?? ' ',
-              ),
+
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
@@ -97,9 +90,15 @@ class _StoryWidgetState extends State<StoryWidget> {
                     ...List.generate(
                       listStoryCard.length,
                       (index) {
-                        return SizedBox(
-                          width: widthItem,
-                          height: heightItem,
+                        return
+                        InkWell(
+                            child:
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(
+                                20),child:
+                          SizedBox(
+                          width: 250,
+                          height: 150,
                           child: Stack(
                             fit: StackFit.expand,
                             children: [
@@ -108,9 +107,9 @@ class _StoryWidgetState extends State<StoryWidget> {
                                     left: StoryConstants.spaceBetweenStory),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(
-                                      _storyConfig.radius!),
+                                      20),
                                   child: InteractiveViewer(
-                                    minScale: 0.5,
+                                    minScale: 2,
                                     maxScale: 2,
                                     child: listStoryCard[index],
                                   ),
@@ -119,10 +118,9 @@ class _StoryWidgetState extends State<StoryWidget> {
                               _openFullScreenStory(context, index),
                             ],
                           ),
-                        );
+                        )));
                       },
                     ),
-                    space,
                   ],
                 ),
               ),
@@ -139,17 +137,27 @@ class _StoryWidgetState extends State<StoryWidget> {
       child: GestureDetector(
         key: ValueKey('${StoryConstants.storyTapKey}$index'),
         onTap: () {
-          FluxNavigate.push(
+
+          FluxNavigate.pushNamed(
+            RouteList.detailBlog,
+            arguments: BlogDetailArguments(
+              id: widget.articles[index].id.toString(),
+              blog: widget.articles[index],
+            ),
+            forceRootNavigator: false,
+          );
+          /*FluxNavigate.push(
             MaterialPageRoute(
               builder: (context) => StoryCollection(
                 listStory: renderListStoryCard(),
                 pageCurrent: index,
-                isHorizontal: _storyConfig.isHorizontal,
+                isHorizontal: true,
               ),
             ),
-          );
+          );*/
         },
       ),
     );
   }
 }
+

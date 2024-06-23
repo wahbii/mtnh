@@ -14,6 +14,7 @@ import '../models/entities/b2bking/tired_price.dart';
 import '../models/entities/filter_sorty_by.dart';
 import '../models/entities/product_component.dart';
 import '../models/index.dart';
+import '../models/posts/article_model.dart';
 import '../modules/analytics/analytics.dart';
 import '../modules/dynamic_layout/index.dart';
 import '../modules/dynamic_layout/product/product_list.dart';
@@ -863,7 +864,7 @@ abstract class BaseFrameworks {
       );
 
   /// FluxNews: Render SliderList widget
-  Widget renderSliderList(Map<String, dynamic>? config) => const SizedBox();
+  Widget renderSliderList(List<MapEntry<String, List<Article>>>? config) => const SizedBox();
 
   /// FluxNews: Render SliderItem widget
   Widget renderSliderItem(Map<String, dynamic>? config) => const SizedBox();

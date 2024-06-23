@@ -350,16 +350,18 @@ Map<String, dynamic> environment = {
     "EnableTeraWalletWithdrawal": false,
   },
   "defaultDrawer": {
-    "logo": "assets/images/logo.png",
+    "logo": "assets/images/app_icon.png",
     "background": null,
     "items": [
       {"type": "home", "show": true},
-      {"type": "blog", "show": true},
+      {"type": "Articles", "show": true},
       {"type": "categories", "show": true},
-      {"type": "cart", "show": true},
-      {"type": "profile", "show": true},
+      {"type": "Archives Of Shows", "show": true},
       {"type": "login", "show": true},
-      {"type": "category", "show": true}
+      {"type": "category", "show": true},
+      {"type": "shows", "show": true}
+
+
     ]
   },
   "defaultSettings": [
@@ -412,24 +414,20 @@ Map<String, dynamic> environment = {
     'version': 1,
     'autoCropImageByDesign': true,
     'isOnlyShowOnFirstTime': true,
-    "showLanguage": true,
+    "showLanguage": false,
     'data': [
       {
-        'title': 'Welcome to FluxStore',
-        'image': 'assets/images/fogg-delivery-1.png',
-        'desc': 'Fluxstore is on the way to serve you. '
+        'title': 'Welcome to MHTN',
+        'image': 'assets/images/onboarding1.png',
+        'desc': 'MHTN is a revolutionary streaming network committed to transforming the conversation around mental health'
       },
       {
         'title': 'Connect Surrounding World',
-        'image': 'assets/images/fogg-uploading-1.png',
+        'image': 'assets/images/onboarding2.png',
         'desc':
-            'See all things happening around you just by a click in your phone. Fast, convenient and clean.'
+            'We offer a compassionate and stigma-free platform featuring original programming, insightful resources,and a nurturing global community.'
       },
-      {
-        'title': "Let's Get Started",
-        'image': 'assets/images/fogg-order-completed.png',
-        'desc': "Waiting no more, let's see what we get!"
-      }
+
     ],
   },
 
@@ -524,7 +522,7 @@ Map<String, dynamic> environment = {
     //The link your app will open
     "link": "https://mstore.io/",
     //----------* Android Setting *----------//
-    "androidPackageName": "com.inspireui.fluxstore",
+    "androidPackageName": "com.main.mhtn",
     "androidAppMinimumVersion": 1,
     //----------* iOS Setting *----------//
     "iOSBundleId": "com.inspireui.mstore.flutter",
@@ -1468,29 +1466,7 @@ Map<String, dynamic> environment = {
   /// config for the chat app
   /// config Whatapp: https://faq.whatsapp.com/en/iphone/23559013
   "smartChat": [
-    {
-      "app": "firebase",
-      "imageData":
-          "https://trello.com/1/cards/611a38c89ebde41ec7cf10e2/attachments/611a392cceb1b534aa92a83e/previews/611a392dceb1b534aa92a84d/download",
-      "description": "Realtime Chat",
-    },
-    {
-      "app": "chatGPT",
-      "imageData": "https://i.imgur.com/pp1qlPd.png",
-      "description": "Chat GPT"
-    },
-    {
-      "app": "https://wa.me/849908854",
-      "iconData": "whatsapp",
-      "description": "WhatsApp"
-    },
-    {"app": "tel:8499999999", "iconData": "phone", "description": "Call Us"},
-    {"app": "sms://8499999999", "iconData": "sms", "description": "Send SMS"},
-    {
-      "app": "https://tawk.to/chat/5d830419c22bdd393bb69888/default",
-      "iconData": "whatsapp",
-      "description": "Tawk Chat"
-    },
+
     {
       "app": "http://m.me/inspireui",
       "iconData": "facebookMessenger",

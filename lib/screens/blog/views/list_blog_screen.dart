@@ -30,9 +30,7 @@ class _ListBlogScreenState extends BaseScreen<ListBlogScreen>
 
   @override
   Widget build(BuildContext context) {
-    if (Layout.isDisplayDesktop(context)) {
-      return ListBlogScreenWeb();
-    }
+
     return renderScaffold(
       routeName: RouteList.listBlog,
       secondAppBar: AppBar(
@@ -59,11 +57,9 @@ class _ListBlogScreenState extends BaseScreen<ListBlogScreen>
         scrollController: _scrollController,
         itemBuilder: (context, blog, _) => BlogListItem(
           blog: blog,
-          onTap: () => onTapBlog(
-            blog: blog,
-            blogs: context.read<ListBlogModel>().data,
-            forceRootNavigator: true,
-          ),
+          onTap: () {
+
+          },
         ),
         loadingWidget: _buildSkeleton(),
         lengthLoadingWidget: 3,

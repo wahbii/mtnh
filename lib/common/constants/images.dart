@@ -17,12 +17,12 @@ const kBlogListLayout = [
 const kDefaultImage =
     'https://trello.com/1/cards/5d64f19a7cd71013a9a418cf/attachments/5df37e7dc660f72ec2a6b147/previews/5df37e7ec660f72ec2a6b14f/download/placeholder.jpg';
 
-const kLogoImage = 'assets/images/logo.png';
+const kLogoImage = 'assets/images/app_icon.png';
 
 const kProfileBackground =
     'https://images.unsplash.com/photo-1494253109108-2e30c049369b?ixlib=rb-1.2.1&auto=format&fit=crop&w=3150&q=80';
 
-const String kLogo = 'assets/images/logo.png';
+const String kLogo = 'assets/images/app_icon.png';
 
 const String kEmptySearch = 'assets/images/empty_search.png';
 

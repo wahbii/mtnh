@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../../common/tools.dart';
+import '../../../../../models/posts/article_model.dart';
 import '../../../../../screens/blog/index.dart';
 import '../../../../../widgets/blog/blog_action_button_mixin.dart';
 
 enum SimpleListType { backgroundColor, priceOnTheRight }
 
 class SimpleListView extends StatelessWidget with BlogActionButtonMixin {
-  final Blog item;
-  final List<Blog> listBlog;
+  final Article item;
   final SimpleListType type;
 
   const SimpleListView({
     required this.item,
     required this.type,
-    required this.listBlog,
   });
 
   @override
@@ -24,8 +24,7 @@ class SimpleListView extends StatelessWidget with BlogActionButtonMixin {
     var imageWidth = 60;
     var imageHeight = 60;
     void onTapProduct() {
-      if (item.imageFeature == '') return;
-      onTapBlog(blog: item, blogs: listBlog);
+      onTapBlog(article: item,);
     }
 
     return Padding(
@@ -54,7 +53,7 @@ class SimpleListView extends StatelessWidget with BlogActionButtonMixin {
                       borderRadius:
                           const BorderRadius.all(Radius.circular(10.0)),
                       child: ImageResize(
-                        url: item.imageFeature,
+                        url: item.mrssThumbnail,
                         width: imageWidth.toDouble(),
                         size: kSize.medium,
                         height: imageHeight.toDouble(),
@@ -72,7 +71,7 @@ class SimpleListView extends StatelessWidget with BlogActionButtonMixin {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        item.title,
+                        item.sanitizedTitle,
                         style: TextStyle(
                           fontSize: titleFontSize,
                           fontWeight: FontWeight.w600,
@@ -82,7 +81,8 @@ class SimpleListView extends StatelessWidget with BlogActionButtonMixin {
                       ),
                       const SizedBox(height: 10.0),
                       Text(
-                        item.date,
+                        DateFormat('d MMMM yyyy').format( item.date),
+
                         style: TextStyle(
                           fontSize: 14,
                           color: Theme.of(context)

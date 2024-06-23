@@ -16,7 +16,7 @@ class BlogListItem extends StatelessWidget with BlogActionButtonMixin {
     if (blog.id == null) return const SizedBox();
 
     return InkWell(
-      onTap: () => onTapBlog(blog: blog),
+     // onTap: () => onTapBlog(blog: blog),
       child: Container(
         padding: const EdgeInsets.only(right: 15, left: 15),
         child: Column(

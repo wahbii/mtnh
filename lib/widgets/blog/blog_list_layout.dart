@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../common/constants.dart';
 import '../../frameworks/wordpress/presentation/widgets/blog_staggered.dart';
 import '../../models/index.dart';
+import '../../models/posts/article_model.dart';
 import '../../modules/dynamic_layout/helper/custom_physic.dart';
 import '../../modules/dynamic_layout/index.dart';
 import '../../routes/flux_navigate.dart';
@@ -71,7 +72,7 @@ class _ProductListItemsState extends State<BlogListLayout>
     }
   }
 
-  Widget getBlogsListWidgets(List<Blog>? blogs, double width, context) {
+  Widget getBlogsListWidgets(List<Article>? blogs, double width, context) {
     final physics = widget.config.isSnapping
         ? CustomScrollPhysic(width: _buildBlogWidth(width))
         : const ScrollPhysics();
@@ -92,8 +93,8 @@ class _ProductListItemsState extends State<BlogListLayout>
                 return BlogCard(
                   item: blogs[index],
                   width: _buildBlogWidth(width),
-                  config: widget.config,
-                  onTap: () => onTapBlog(blog: blogs[index], blogs: blogs),
+                  config: widget.config, onTap: () {  },
+                  //onTap: () => onTapBlog(blog: blogs[index], blogs: blogs),
                 );
               },
             ),
@@ -125,7 +126,7 @@ class _ProductListItemsState extends State<BlogListLayout>
               return Column(
                 children: <Widget>[
                   HeaderView(
-                    headerText: widget.config.name ?? ' ',
+                    headerText: "Articles",
                     showSeeAll: isRecent ? false : true,
                     callback: () => FluxNavigate.pushNamed(
                       RouteList.backdrop,
@@ -144,7 +145,7 @@ class _ProductListItemsState extends State<BlogListLayout>
                           const SizedBox(width: 10.0),
                           for (var i = 0; i < 4; i++)
                             BlogCard(
-                              item: Blog.empty(i),
+                              item: null,
                               width: _buildBlogWidth(
                                 maxWidth,
                               ),
@@ -183,7 +184,7 @@ class _ProductListItemsState extends State<BlogListLayout>
                     : (widget.config.layout == 'staggered'
                         ? BlogStaggered(value, widget.config)
                         : getBlogsListWidgets(
-                            value,
+                            null,
                             maxWidth,
                             context,
                           )),

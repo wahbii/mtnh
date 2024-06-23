@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../../common/tools/image_tools.dart';
+import '../../../../../models/posts/article_model.dart';
 import '../../../../../screens/blog/index.dart';
 import '../../../../../widgets/blog/blog_action_button_mixin.dart';
 
 class PostView extends StatelessWidget with BlogActionButtonMixin {
-  final List<Blog>? blogs;
+  final List<Article>? blogs;
   final int? index;
   final double? width;
   final String? type;
@@ -30,7 +32,7 @@ class PostView extends StatelessWidget with BlogActionButtonMixin {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 5.0),
       child: GestureDetector(
-        onTap: () => onTapBlog(blog: blogs?[index ?? 0], blogs: blogs),
+        onTap: () => onTapBlog(article: blogs?[index ?? 0], ),
         child: SizedBox(
           width: MediaQuery.of(context).size.width,
           child: Row(
@@ -41,7 +43,7 @@ class PostView extends StatelessWidget with BlogActionButtonMixin {
                   Radius.circular(imageBorder!),
                 ),
                 child: ImageResize(
-                  url: blogs![index!].imageFeature,
+                  url: blogs![index!].mrssThumbnail,
                   width: imageWidth,
                   height: imageWidth,
                   fit: BoxFit.cover,
@@ -55,7 +57,7 @@ class PostView extends StatelessWidget with BlogActionButtonMixin {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      blogs![index!].title,
+                      blogs![index!].sanitizedTitle,
                       style: TextStyle(
                         fontSize: titleFontSize,
                         fontWeight: FontWeight.w800,
@@ -68,7 +70,7 @@ class PostView extends StatelessWidget with BlogActionButtonMixin {
                       height: imageWidth / 35,
                     ),
                     Text(
-                      blogs![index!].date,
+                        DateFormat('d MMMM yyyy').format( blogs![index!].date),
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.secondary,
                       ),
@@ -76,10 +78,10 @@ class PostView extends StatelessWidget with BlogActionButtonMixin {
                     const SizedBox(
                       height: 10,
                     ),
-                    blogs![index!].excerpt == 'Loading...'
-                        ? Text(blogs![index!].excerpt)
+                    blogs![index!].sanitizedExcerpt == 'Loading...'
+                        ? Text(blogs![index!].sanitizedExcerpt)
                         : Text(
-                            parse(blogs![index!].excerpt).documentElement!.text,
+                            parse(blogs![index!].sanitizedExcerpt).documentElement!.text,
                             maxLines: 3,
                             style: Theme.of(context)
                                 .textTheme

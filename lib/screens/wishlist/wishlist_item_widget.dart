@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../common/constants.dart';
 import '../../generated/l10n.dart';
 import '../../models/index.dart' show Product;
+import '../../models/posts/article_model.dart';
 import '../../services/service_config.dart';
 import '../../services/services.dart';
 import '../../widgets/common/flux_image.dart';
@@ -13,7 +14,7 @@ import '../../widgets/product/widgets/pricing.dart';
 class WishlistItem extends StatelessWidget with ActionButtonMixin {
   const WishlistItem({required this.product, this.onAddToCart, this.onRemove});
 
-  final Product product;
+  final Article product;
   final VoidCallback? onAddToCart;
   final VoidCallback? onRemove;
 
@@ -25,7 +26,7 @@ class WishlistItem extends StatelessWidget with ActionButtonMixin {
       builder: (context, constraints) {
         return Column(children: [
           InkWell(
-            onTap: () => onTapProduct(context, product: product),
+           // onTap: () => onTapProduct(context, product: product),
             child: Row(
               key: ValueKey(product.id),
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -45,10 +46,8 @@ class WishlistItem extends StatelessWidget with ActionButtonMixin {
                             ClipRRect(
                               borderRadius: BorderRadius.circular(6.0),
                               child: FluxImage(
-                                imageUrl:
-                                    (product.imageFeature?.isNotEmpty ?? false)
-                                        ? product.imageFeature!
-                                        : kDefaultImage,
+                                imageUrl: product.mrssThumbnail
+                                ,
                                 fit: BoxFit.cover,
                                 width: 100,
                                 height: 100,
@@ -60,7 +59,7 @@ class WishlistItem extends StatelessWidget with ActionButtonMixin {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    product.name ?? '',
+                                    product.sanitizedTitle ?? '',
                                     style: Theme.of(context)
                                         .textTheme
                                         .titleMedium
@@ -69,40 +68,14 @@ class WishlistItem extends StatelessWidget with ActionButtonMixin {
                                             fontSize: 14),
                                   ),
                                   const SizedBox(height: 7),
-                                  ProductPricing(
-                                    product: product,
+                                 /* ProductPricing(
+                                    product: product.date.toString(),
                                     hide: false,
                                     priceTextStyle: const TextStyle(
                                         fontWeight: FontWeight.normal,
                                         fontSize: 14),
-                                  ),
+                                  )*/
                                   const SizedBox(height: 10),
-                                  if (Services()
-                                          .widget
-                                          .enableShoppingCart(product) &&
-                                      !ServerConfig().isListingType)
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        foregroundColor: Colors.white,
-                                        backgroundColor:
-                                            localTheme.primaryColor,
-                                      ),
-                                      onPressed: () => DialogAddToCart.show(
-                                          context,
-                                          product: product),
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 10.0),
-                                        child: Text(
-                                          ((product.isPurchased &&
-                                                      product.isDownloadable!)
-                                                  ? S.of(context).download
-                                                  : S.of(context).addToCart)
-                                              .toUpperCase(),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
-                                    ),
                                 ],
                               ),
                             ),

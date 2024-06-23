@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../common/constants.dart';
@@ -6,6 +7,8 @@ import '../../../../common/tools.dart';
 import '../../../../generated/l10n.dart';
 import '../../../../menu/index.dart';
 import '../../../../models/index.dart';
+import '../../../../models/posts/article_fav.dart';
+import '../../../../models/posts/article_model.dart';
 import '../../../../screens/common/app_bar_mixin.dart';
 import '../../../../widgets/blog/blog_action_button_mixin.dart';
 
@@ -19,11 +22,22 @@ class BlogWishListScreen extends StatefulWidget {
 class _BlogWishListScreenState extends State<BlogWishListScreen>
     with SingleTickerProviderStateMixin, AppBarMixin, BlogActionButtonMixin {
   final ScrollController _scrollController = ScrollController();
+  List<Article> _articles = [];
 
   @override
   void initState() {
     super.initState();
     screenScrollController = _scrollController;
+    _loadArticles();
+
+  }
+
+  Future<void> _loadArticles() async {
+    final List<Article> articles = await SharedPreferencesHelper.getArticles();
+    print("hello init ${articles.length}" );
+    setState(() {
+      _articles = articles;
+    });
   }
 
   @override
@@ -42,31 +56,36 @@ class _BlogWishListScreenState extends State<BlogWishListScreen>
               ?.copyWith(fontWeight: FontWeight.w700),
         ),
       ),
-      child: Consumer<BlogWishListModel>(
-        builder: (context, model, child) {
-          if (model.blogs.isEmpty) {
-            return _EmptyWishlist();
-          }
-          return ListView.builder(
-            padding: const EdgeInsets.only(top: 12.0),
-            controller: _scrollController,
-            itemCount: model.blogs.length,
-            itemBuilder: (context, index) {
-              final blog = model.blogs[index];
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 12.0),
-                child: _BlogWishListItem(
-                  blog: blog,
-                  onTap: () => onTapBlog(blog: blog, blogs: model.blogs),
-                  onRemove: () {
-                    model.removeToWishlist(blog);
-                  },
-                ),
-              );
-            },
+      child: _articles.isEmpty ?
+
+       _EmptyWishlist()
+
+
+          :
+      ListView.builder(
+        padding: const EdgeInsets.only(top: 12.0),
+        controller: _scrollController,
+        itemCount: _articles.length,
+        itemBuilder: (context, index) {
+          final blog = _articles[index];
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 12.0),
+            child: _BlogWishListItem(
+              blog: blog,
+              onTap: () {
+
+              },
+                onRemove: () async {
+                  await  SharedPreferencesHelper.removeArticle(_articles[index]);
+                  Tools.showSnackBar(
+                      ScaffoldMessenger.of(context), "item is removed from your fav");
+                  _loadArticles();
+                },
+            ),
           );
         },
-      ),
+      )
+      ,
     );
   }
 }
@@ -155,7 +174,7 @@ class _BlogWishListItem extends StatelessWidget {
     required this.onTap,
   });
 
-  final Blog blog;
+  final Article blog;
   final VoidCallback onRemove;
   final VoidCallback onTap;
 
@@ -189,7 +208,7 @@ class _BlogWishListItem extends StatelessWidget {
                             height: screenSize.width * 0.15,
                             child: ImageResize(
                               fit: BoxFit.fitWidth,
-                              url: blog.imageFeature,
+                              url: blog.mrssThumbnail,
                               size: kSize.medium,
                             ),
                           ),
@@ -199,12 +218,13 @@ class _BlogWishListItem extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  blog.title,
+                                  blog.sanitizedTitle,
                                   style: localTheme.textTheme.bodySmall,
                                 ),
                                 const SizedBox(height: 7),
                                 Text(
-                                  blog.date,
+    DateFormat('d MMMM yyyy').format(blog.date)
+                                  ,
                                   style: Theme.of(context)
                                       .textTheme
                                       .headlineSmall

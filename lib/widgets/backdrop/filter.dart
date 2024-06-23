@@ -27,6 +27,7 @@ class FilterWidget extends StatefulWidget {
     dynamic minPrice,
     dynamic maxPrice,
     List<String>? categoryId,
+
     String? categoryName,
     List<String>? tagId,
     String? listingLocationId,

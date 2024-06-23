@@ -89,7 +89,9 @@ class _SliderItemState extends State<SliderItem> with BlogActionButtonMixin {
                 index: index,
                 imageBorder: config.imageBorder,
                 context: context,
-                onTap: () => onTapBlog(blog: value[index], blogs: value),
+                  onTap: () {
+
+                  }
               );
             },
           );

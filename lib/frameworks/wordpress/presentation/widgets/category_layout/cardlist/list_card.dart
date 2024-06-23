@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../../models/entities/index.dart';
+import '../../../../../../models/posts/article_model.dart';
 import '../../../../../../widgets/blog/blog_action_button_mixin.dart';
 import '../../../../../../widgets/blog/blog_card_view.dart';
 
 class ListCard extends StatelessWidget with BlogActionButtonMixin {
-  final List<Blog> data;
+  final List<Article> data;
   final String id;
   final double width;
 
@@ -24,7 +25,10 @@ class ListCard extends StatelessWidget with BlogActionButtonMixin {
               return BlogCard(
                 item: data[index],
                 width: constraints.maxWidth * 0.5,
-                onTap: () => onTapBlog(blog: data[index], blogs: data),
+               onTap: (){
+
+               },
+               // onTap: () => onTapBlog(article: data[index],),
               );
             },
             itemCount: data.length,

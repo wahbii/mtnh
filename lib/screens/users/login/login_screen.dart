@@ -125,17 +125,14 @@ class _LoginPageState extends BaseScreen<LoginScreenMobile>
                     child: AutofillGroup(
                       child: Column(
                         children: <Widget>[
-                          Expanded(
-                            flex: 1,
-                            child: FractionallySizedBox(
-                              widthFactor: 0.8,
-                              child: FluxImage(
-                                imageUrl: themeConfig.logo,
-                                fit: BoxFit.contain,
-                                useExtendedImage: false,
+                          FluxImage(
+                                imageUrl: "https://static.mhtn.org/wp-content/uploads/2024/01/05200934/MENTAL-HEALTH-TV_LOGO_BLUE-02-2.png",
+                                fit: BoxFit.fill,
+                                useExtendedImage: true,
+                                width: 250,
+                            height: 180,
                               ),
-                            ),
-                          ),
+
                           Expanded(
                             flex: 3,
                             child: SingleChildScrollView(
@@ -241,15 +238,15 @@ class _LoginPageState extends BaseScreen<LoginScreenMobile>
                                             color: Theme.of(context)
                                                 .colorScheme
                                                 .surface),
-                                        Text(
+                               /*         Text(
                                           S.of(context).or,
                                           style: TextStyle(
                                               fontSize: 12,
                                               color: Colors.grey.shade400),
-                                        )
+                                        )*/
                                       ],
                                     ),
-                                  SocialLoginButtonRow(
+                                /*  SocialLoginButtonRow(
                                     onApplePressed: () =>
                                         loginWithApple(context),
                                     onFacebookPressed: () =>
@@ -257,7 +254,7 @@ class _LoginPageState extends BaseScreen<LoginScreenMobile>
                                     onGooglePressed: () =>
                                         loginWithGoogle(context),
                                     onSmsPressed: () => loginWithSMS(context),
-                                  ),
+                                  )*/
                                   const SizedBox(height: 30.0),
                                   Column(
                                     children: <Widget>[

@@ -133,29 +133,7 @@ class Logo extends StatelessWidget with MultiSiteMixin {
   });
 
   Widget renderLogo() {
-    final logoSize = config.logoSize;
 
-    if (config.image != null) {
-      if (config.image!.contains('http')) {
-        return SizedBox(
-          height: logoSize - 10,
-          child: FluxImage(
-            imageUrl: config.image!,
-            height: logoSize,
-            fit: BoxFit.contain,
-          ),
-        );
-      }
-      return Image.asset(
-        config.image!,
-        height: logoSize,
-      );
-    }
-
-    /// render from config to support dark/light theme
-    if (logo != null) {
-      return FluxImage(imageUrl: logo!, height: logoSize);
-    }
 
     return const SizedBox();
   }

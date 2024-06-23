@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../../../common/config.dart';
 import '../../../../../generated/l10n.dart';
 import '../../../../../models/index.dart';
+import '../../../../../models/posts/article_provider.dart';
 import '../../../../../services/index.dart';
 import '../../../../../widgets/blog/blog_action_button_mixin.dart';
 import '../../../../../widgets/blog/blog_card_view.dart';
@@ -77,30 +78,20 @@ class SideMenuCategoriesState extends State<SideMenuCategories>
               ),
             ),
             Expanded(child: LayoutBuilder(
+
               builder: (context, constraints) {
-                return FutureBuilder<List<Blog>>(
-                  future: _service.api.fetchBlogsByCategory(
-                    categoryId: categories[selectedIndex].id,
-                    page: 1,
+                var data = context.read<ArticleNotifier>().articles ;
+                return ListView.builder(
+                  padding: const EdgeInsets.all(10),
+                  itemCount: data?.length,
+                  itemBuilder: (context, index) => BlogCard(
+                    item: data![index],
+                    width: constraints.maxWidth,
+                    onTap: () {
+
+                      onTapBlog(article: data[index],);
+                    },
                   ),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<List<Blog>> snapshot) {
-                    if (!snapshot.hasData) {
-                      return kLoadingWidget(context);
-                    }
-                    return ListView.builder(
-                      padding: const EdgeInsets.all(10),
-                      itemCount: snapshot.data?.length,
-                      itemBuilder: (context, index) => BlogCard(
-                        item: snapshot.data![index],
-                        width: constraints.maxWidth,
-                        onTap: () {
-                          var value = snapshot.data ?? [];
-                          onTapBlog(blog: value[index], blogs: value);
-                        },
-                      ),
-                    );
-                  },
                 );
               },
             ))

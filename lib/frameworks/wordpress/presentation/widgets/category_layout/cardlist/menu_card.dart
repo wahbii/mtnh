@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../../../models/index.dart';
+import '../../../../../../models/posts/article_model.dart';
+import '../../../../../../models/posts/article_provider.dart';
 import '../../../../../../services/index.dart';
 import '../../../../../../widgets/blog/blog_action_button_mixin.dart';
 import '../../../../../../widgets/blog/blog_card_view.dart';
@@ -132,86 +135,30 @@ class _StateMenuCard extends State<MenuCard> with BlogActionButtonMixin {
                   : Container(
                       height: 20,
                     ),
-              FutureBuilder<List<List<Blog>>>(
-                future: getAllListProducts(),
-                builder: (context, snaphost) {
-                  if (!snaphost.hasData) {
-                    return SizedBox(
-                      height: productHeight,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: List.generate(3, (index) {
-                          return BlogCard(
-                            item: Blog.empty(index),
-                            width: productHeight * 0.8,
-                            onTap: () {},
-                          );
-                        }),
+              SizedBox(
+                height: productHeight,
+                child: SingleChildScrollView(
+                  child: Row(
+                    children: <Widget>[
+                      AnimatedContainer(
+                        width: _width,
+                        duration: Duration(milliseconds: durations),
+                        decoration: const BoxDecoration(),
                       ),
-                    );
-                  }
-                  if (snaphost.data!.isEmpty) {
-                    return FutureBuilder<List<Blog>>(
-                      future: getProductFromCategory(
-                          categoryId: widget.category.id, page: 1),
-                      builder: (context, product) {
-                        if (!product.hasData) {
-                          return SizedBox(
-                            height: productHeight,
-                            child: ListView(
-                              scrollDirection: Axis.horizontal,
-                              children: List.generate(3, (index) {
-                                return BlogCard(
-                                  item: Blog.empty(index),
-                                  width: productHeight * 0.8,
-                                  onTap: () {},
-                                );
-                              }),
-                            ),
-                          );
-                        }
-                        return SizedBox(
-                          height: productHeight,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: product.data!.length,
-                            itemBuilder: (context, index) {
-                              var value = product.data ?? [];
-                              return BlogCard(
-                                item: value[index],
-                                width: productHeight * 0.8,
-                                onTap: () =>
-                                    onTapBlog(blog: value[index], blogs: value),
-                              );
-                            },
-                          ),
-                        );
-                      },
-                    );
-                  }
-                  return SizedBox(
-                    height: productHeight,
-                    child: SingleChildScrollView(
-                      child: Row(
-                        children: <Widget>[
-                          AnimatedContainer(
-                            width: _width,
-                            duration: Duration(milliseconds: durations),
-                            decoration: const BoxDecoration(),
-                          ),
-                          Expanded(
-                            child: ListCard(
-                              data: snaphost.data![position],
-                              width: constraints.maxWidth,
-                              id: widget.categories[position].id.toString(),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  );
-                },
+                      Expanded(
+                        child: ListCard(
+                          data: context.read<ArticleNotifier>().articles,
+                          width: constraints.maxWidth,
+                          id: widget.categories[position].id.toString(),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               ),
+
+
+
             ],
           ),
         );

@@ -157,8 +157,9 @@ class _BlogGridState extends BaseScreen<BlogGrid> with BlogActionButtonMixin {
                                       : Colors.transparent,
                                   innerPadding:
                                       widget.config?.innerPadding ?? 0.0,
-                                  onTap: () =>
-                                      onTapBlog(blog: blog, blogs: listBlog),
+                            onTap: () {
+
+                            }
                                 ))
                             .toList(),
                       ),

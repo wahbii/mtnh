@@ -197,7 +197,7 @@ class DynamicLinkServiceImpl extends DynamicLinkService {
         if (blog != null) {
           await FluxNavigate.pushNamed(
             RouteList.detailBlog,
-            arguments: BlogDetailArguments(blog: blog),
+            arguments: BlogDetailArguments(blog: null),
           );
         }
       }

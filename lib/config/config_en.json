@@ -274,7 +274,7 @@
     },
     {
       "key": "v14g5clzc34tf8",
-      "name": "On Sale Today ⚡️",
+      "name": "Latest Posts ⚡️",
       "layout": "saleOff",
       "isSnapping": true,
       "rows": 1,
@@ -355,26 +355,7 @@
       "layout": "twoColumn",
       "category": 31
     },
-    {
-      "layout": "bannerImage",
-      "design": "static",
-      "useFor": "mobile",
-      "fit": "fitWidth",
-      "marginLeft": 0.0,
-      "enableBackground": true,
-      "items": [
-        {
-          "image": "https://trello.com/1/cards/5fb8de4a9ffe12204a2a3607/attachments/5fb8de57d9356e0af474cc94/previews/5fb8de58d9356e0af474cca0/download/image.png",
-          "coupon": "blackf",
-          "padding": 15.0,
-          "radius": 9.0
-        }
-      ],
-      "marginBottom": 0.0,
-      "height": 0.15,
-      "marginRight": 0.0,
-      "marginTop": 20.0
-    },
+
     {
       "name": "Community Sharing",
       "image": "",
@@ -414,7 +395,7 @@
       "useLogo": true,
       "alwaysShowUponOpen": true
     },
-    "AboutUS": "https://codecanyon.net/user/inspireui",
+    "AboutUS": "https://mhtn.org/contact-us/",
     "Privacy": "https://inspireui.com/privacy/",
     "FAQ": "https://products.inspireui.com/have-a-question/",
     "News": "https://products.inspireui.com/",
@@ -424,30 +405,7 @@
       "popup": {
         "enable": false,
         "data": {
-          "layout": "bannerImage",
-          "design": "static",
-          "fit": "fitHeight",
-          "marginLeft": null,
-          "items": [
-            {
-              "image": "https://i.imgur.com/ZL1LO75.png",
-              "showSubcategory": false,
-              "bannerWithProduct": false,
-              "defaultShowProduct": false,
-              "products": [],
-              "category": "22",
-              "padding": 0.0
-            }
-          ],
-          "marginBottom": 10.0,
-          "height": 0.45,
-          "marginRight": null,
-          "marginTop": 10.0,
-          "enableParallax": false,
-          "parallaxImageRatio": 1.2,
-          "isHorizontal": false,
-          "parallax": false,
-          "key": "p2oq4zc4hg"
+
         },
         "alwaysShowUponOpen": true,
         "closePosition": "topRight",
@@ -481,36 +439,6 @@
         "canClose": true,
         "width": 100.0,
         "height": 100.0
-      },
-      "sticky": {
-        "enable": false,
-        "data": {
-          "layout": "bannerImage",
-          "design": "static",
-          "fit": "fitWidth",
-          "marginLeft": 10.0,
-          "items": [
-            {
-              "image": "https://i.imgur.com/LUaEM3v.jpeg",
-              "showSubcategory": false,
-              "bannerWithProduct": false,
-              "defaultShowProduct": false,
-              "products": [],
-              "coupon": "halfprice",
-              "padding": 0.0,
-              "radius": 9.0
-            }
-          ],
-          "marginBottom": 10.0,
-          "marginRight": 10.0,
-          "marginTop": 10.0,
-          "height": 0.2,
-          "enableParallax": false,
-          "parallaxImageRatio": 1.2,
-          "isHorizontal": false,
-          "parallax": false,
-          "key": "ga8oe39k5t"
-        }
       }
     }
   },
@@ -519,19 +447,14 @@
       "layout": "home",
       "icon": "assets/icons/tabs/icon-home.png"
     },
-    {
-      "layout": "category",
-      "categoryLayout": "card",
-      "icon": "assets/icons/tabs/icon-category.png",
-      "showSearch": false
-    },
+
     {
       "layout": "search",
       "icon": "assets/icons/tabs/icon-search.png"
     },
     {
       "layout": "wishlist",
-      "icon": "assets/icons/tabs/icon-heartthin.png"
+      "icon": "assets/icons/tabs/book_mark.png"
     },
     {
       "layout": "profile",

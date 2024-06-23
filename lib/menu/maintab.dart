@@ -567,6 +567,7 @@ extension TabBarMenuExtention on MainTabsState {
 
   /// on tap on the TabBar icon
   void _onTapTabBar(int index) {
+
     var appModel = Provider.of<AppModel>(context, listen: false);
     final userModel = Provider.of<UserModel>(context, listen: false);
 
@@ -593,13 +594,17 @@ extension TabBarMenuExtention on MainTabsState {
         },
       };
     }
-
+    print("${tabData?.layout.toString()}");
+    if(tabData?.layout.toString() == "wishlist")_initTabData(context);
     if (tabData != null && tabData.isFullscreen) {
+
       FluxNavigate.pushNamed(
         tabData.layout.toString(),
         arguments: routeData,
         forceRootNavigator: true,
       );
+
+
 
       if (tabController.indexIsChanging) {
         tabController.index = tabController.previousIndex;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../../screens/base_screen.dart';
 import 'flux_image.dart';
@@ -55,12 +56,11 @@ class _StaticSplashScreenState extends BaseScreen<StaticSplashScreen> {
         ),
         child: LayoutBuilder(
           builder: (context, constraints) {
-            return FluxImage(
-              imageUrl: widget.imagePath!,
-              fit: widget.boxFit,
-              height: constraints.maxHeight,
-              width: constraints.maxWidth,
-            );
+            return      Image.asset(
+                width: MediaQuery.sizeOf(context).width * 0.6,
+                height: MediaQuery.sizeOf(context).width * 0.4,
+                fit: BoxFit.fill,
+                "assets/images/ic_app_icon.png");
           },
         ),
       ),

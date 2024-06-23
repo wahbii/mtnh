@@ -7,6 +7,7 @@ import '../../../models/app_model.dart';
 import '../../../models/category/category_model.dart';
 import '../../../models/filter_attribute_model.dart';
 import '../../../models/filter_tags_model.dart';
+import '../../../models/posts/article_provider.dart';
 import '../../../models/search_model.dart';
 import '../../../models/user_model.dart';
 import '../../../modules/analytics/analytics.dart';
@@ -81,15 +82,11 @@ class StateSearchScreen extends State<SearchWidget>
   Future<void> _onSearch() async {
     final name = _searchFieldController.text;
     final userId = Provider.of<UserModel>(context, listen: false).user?.id;
-    await _searchModel.loadProduct(name: name, userId: userId);
-    Analytics.triggerSearchProduct(
-      name,
-      _searchModel.products?.isEmpty ?? true,
-      context,
-    );
+
   }
 
   Future<void> _onSearchTextChange(String value) async {
+    print(value);
     if (value.isEmpty) {
       _showResult = false;
       setState(() {});

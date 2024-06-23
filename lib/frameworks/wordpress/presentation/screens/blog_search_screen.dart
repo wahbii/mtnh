@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -8,6 +7,8 @@ import '../../../../common/config.dart';
 import '../../../../common/constants.dart';
 import '../../../../generated/l10n.dart';
 import '../../../../models/blog_search_model.dart';
+import '../../../../models/posts/article_provider.dart';
+import '../../../../models/posts/search_provider.dart';
 import '../../../../screens/common/app_bar_mixin.dart';
 import '../../../../screens/search/widgets/search_empty_result.dart';
 import '../widgets/blog_list.dart';
@@ -15,6 +16,7 @@ import '../widgets/blog_recent_search.dart';
 
 class BlogSearchScreen extends StatefulWidget {
   final bool? boostEngine;
+
   const BlogSearchScreen({
     super.key,
     this.boostEngine,
@@ -53,11 +55,8 @@ class _StateSearchScreen extends State<BlogSearchScreen> with AppBarMixin {
   }
 
   Widget _renderSearchLayout() {
-    return ListenableProvider.value(
-      value: Provider.of<BlogSearchModel>(context, listen: false),
-      child: Consumer<BlogSearchModel>(builder: (context, model, child) {
-        if (searchText.isEmpty) {
-          return BlogRecentSearch(
+    return searchText.isEmpty
+        ? BlogRecentSearch(
             onTap: (text) {
               setState(() {
                 searchText = text;
@@ -70,49 +69,40 @@ class _StateSearchScreen extends State<BlogSearchScreen> with AppBarMixin {
                 boostEngine: widget.boostEngine,
               );
             },
-          );
-        }
+          )
+        : Consumer<SearchNotifier>(builder: (context, articleNotifier, child) {
+            if (articleNotifier.isLoadingSearch) {
+              return kLoadingWidget(context);
+            }
 
-        if (model.loading) {
-          return kLoadingWidget(context);
-        }
+            if (articleNotifier.errorMessageSearch != null) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: Center(
+                    child: Text(articleNotifier.errorMessageSearch.toString(),
+                        style: const TextStyle(color: kErrorRed))),
+              );
+            }
+            if (articleNotifier.searchArticles.isEmpty) {
+              return const EmptySearch();
+            } else {
+              return Column(
+                children: <Widget>[
 
-        if (model.errMsg.isNotEmpty && kDebugMode) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: Center(
-                child: Text(model.errMsg,
-                    style: const TextStyle(color: kErrorRed))),
-          );
-        }
-        if (model.blogs.isEmpty) {
-          return const EmptySearch();
-        }
-
-        return Column(
-          children: <Widget>[
-            Container(
-              height: 45,
-              decoration:
-                  BoxDecoration(color: Theme.of(context).colorScheme.surface),
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Row(children: [
-                Text(
-                  S.of(context).weFoundBlogs,
-                )
-              ]),
-            ),
-            Expanded(
-              child: Container(
-                decoration:
-                    BoxDecoration(color: Theme.of(context).colorScheme.surface),
-                child: BlogList(name: searchText, blogs: model.blogs),
-              ),
-            )
-          ],
-        );
-      }),
-    );
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surface),
+                      child: BlogListSearch(
+                          name: searchText,
+                          blogs: articleNotifier.searchArticles),
+                    ),
+                  )
+                ],
+              );
+            }
+            return Container();
+          });
   }
 
   AppBar? renderAppBar() {
@@ -130,7 +120,7 @@ class _StateSearchScreen extends State<BlogSearchScreen> with AppBarMixin {
         leading: Navigator.of(context).canPop()
             ? Center(
                 child: GestureDetector(
-                  onTap: () => Navigator.pop(context),
+                  onTap: () => Navigator.of(context).pop(),
                   child: const Icon(
                     Icons.arrow_back_ios,
                   ),
@@ -192,20 +182,11 @@ class _StateSearchScreen extends State<BlogSearchScreen> with AppBarMixin {
                         controller: textController,
                         focusNode: _focus,
                         onChanged: (text) {
-                          if (_timer != null) {
-                            _timer?.cancel();
-                          }
-                          _timer = Timer(const Duration(milliseconds: 500), () {
-                            if (mounted) {
+
                               setState(() {
                                 searchText = text;
                               });
-                            }
-                            Provider.of<BlogSearchModel>(context, listen: false)
-                                .searchBlogs(
-                                    name: text,
-                                    boostEngine: widget.boostEngine);
-                          });
+
                         },
                         decoration: InputDecoration(
                           fillColor: Theme.of(context).colorScheme.secondary,
@@ -214,24 +195,20 @@ class _StateSearchScreen extends State<BlogSearchScreen> with AppBarMixin {
                         ),
                       ),
                     ),
-                    AnimatedContainer(
-                      width: (searchText.isEmpty) ? 0 : 50,
-                      duration: const Duration(milliseconds: 200),
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            searchText = '';
-                            isVisibleSearch = false;
-                          });
-                          textController.text = '';
-                          FocusScope.of(context).requestFocus(FocusNode());
-                        },
-                        child: Center(
-                          child: Text(S.of(context).cancel,
-                              overflow: TextOverflow.ellipsis),
-                        ),
-                      ),
-                    )
+                    InkWell(child: Container(
+                      padding: EdgeInsets.only(left:  10,right: 10,top: 5,bottom: 5),
+                      width: 70,
+                      child: Text("search",style: TextStyle(fontWeight: FontWeight.w700),),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: Colors.white),
+                    ),onTap: (){
+                      if(searchText.isNotEmpty){
+                        context
+                            .read<SearchNotifier>()
+                            .searcharticles(searchText);
+                      };
+                    },)
                   ],
                 ),
               ),

@@ -59,7 +59,7 @@ mixin SettingActionMixin {
         context,
         MaterialPageRoute(
           builder: (context) => WebView(
-            url: pageUrl,
+            url: "https://mhtn.org/privacy-policy/",
             title: S.of(context).agreeWithPrivacy,
           ),
         ),

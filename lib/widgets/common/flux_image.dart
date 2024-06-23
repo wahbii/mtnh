@@ -138,54 +138,60 @@ class FluxImage extends StatelessWidget {
     }
 
     if (useExtendedImage) {
-      return ExtendedImage.network(
-        urlProxy,
-        width: width,
-        height: height,
-        fit: fit,
-        color: color,
-        cache: true,
-        alignment: alignment,
-        cacheWidth: kIsWeb ? null : cacheWidth,
-        loadStateChanged: (state) {
-          switch (state.extendedImageLoadState) {
-            case LoadState.completed:
-              return state.completedWidget;
-            // return ImageFade(
-            //   image: state.imageProvider,
-            //   width: width,
-            //   height: height,
-            //   fit: fit ?? BoxFit.scaleDown,
-            //   alignment: alignment,
-            //   duration: const Duration(milliseconds: 250),
-            // );
-            case LoadState.failed:
-              return errorWidget ?? const SizedBox();
-            case LoadState.loading:
-            default:
-              return const SizedBox();
-          }
-        },
-      );
+      return ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: AspectRatio(
+              aspectRatio: 16 / 9,
+              child: ExtendedImage.network(
+                urlProxy,
+
+                  fit: BoxFit.cover,
+
+                color: color,
+                cache: true,
+                alignment: alignment,
+                cacheWidth: kIsWeb ? null : cacheWidth,
+                loadStateChanged: (state) {
+                  switch (state.extendedImageLoadState) {
+                    case LoadState.completed:
+                      return state.completedWidget;
+                    // return ImageFade(
+                    //   image: state.imageProvider,
+                    //   width: width,
+                    //   height: height,
+                    //   fit: fit ?? BoxFit.scaleDown,
+                    //   alignment: alignment,
+                    //   duration: const Duration(milliseconds: 250),
+                    // );
+                    case LoadState.failed:
+                      return errorWidget ?? const SizedBox();
+                    case LoadState.loading:
+                    default:
+                      return const SizedBox();
+                  }
+                },
+              )));
     } else {
-      return Image.network(
-        urlProxy,
-        width: width,
-        height: height,
-        fit: fit,
-        color: color,
-        alignment: alignment,
-        cacheWidth: cacheWidth,
-        errorBuilder: (context, error, stackTrace) {
-          return errorWidget ?? const SizedBox();
-        },
-        loadingBuilder: (context, child, loadingProgress) {
-          if (loadingProgress == null) {
-            return child;
-          }
-          return const SizedBox();
-        },
-      );
+      return ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: AspectRatio(
+              aspectRatio: 16 / 9,
+              child: Image.network(
+                urlProxy,
+                fit: BoxFit.cover,
+                color: color,
+                alignment: alignment,
+                cacheWidth: cacheWidth,
+                errorBuilder: (context, error, stackTrace) {
+                  return errorWidget ?? const SizedBox();
+                },
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) {
+                    return child;
+                  }
+                  return const SizedBox();
+                },
+              )));
     }
   }
 }

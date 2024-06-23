@@ -127,7 +127,7 @@ class StaggeredBlogCard extends StatelessWidget with BlogActionButtonMixin {
     return GestureDetector(
       onTap: () {
         if (blogs[index].imageFeature == '') return;
-        onTapBlog(blog: blogs[index], blogs: blogs);
+       // onTapBlog(blog: blogs[index], blogs: blogs);
       },
       child: isHero
           ? Hero(

@@ -64,11 +64,9 @@ class _ListBlogScreenWebState extends BaseScreen<ListBlogScreenWeb>
                             blog: data.first,
                             radius: _borderRadius,
                             config: BlogConfig(),
-                            onTap: () => onTapBlog(
-                              blog: data.first,
-                              blogs: provider.data,
-                              forceRootNavigator: true,
-                            ),
+                            onTap: () {
+
+                            },
                           ),
                         ),
                         const SizedBox(width: 32),
@@ -86,11 +84,9 @@ class _ListBlogScreenWebState extends BaseScreen<ListBlogScreenWeb>
                                           width: 0,
                                         ),
                                         config: BlogConfig(),
-                                        onTap: () => onTapBlog(
-                                          blog: blog,
-                                          blogs: provider.data,
-                                          forceRootNavigator: true,
-                                        ),
+                                        onTap: () {
+
+                                        },
                                       ),
                                     ))
                                 .expand((element) =>
@@ -124,11 +120,9 @@ class _ListBlogScreenWebState extends BaseScreen<ListBlogScreenWeb>
                       blog: blog,
                       radius: _borderRadius,
                       config: BlogConfig(),
-                      onTap: () => onTapBlog(
-                        blog: blog,
-                        blogs: provider.data,
-                        forceRootNavigator: true,
-                      ),
+                       onTap: () {
+
+                    },
                     );
                   },
                 ),

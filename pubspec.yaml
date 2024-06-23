@@ -1,6 +1,6 @@
 name: fstore
 publish_to: "none"
-description: Mobile commerce app by Flutter
+description: Mobile Mental Health Television
 
 # Release version: v4.1.0 (Do not change this line)
 # A version number is three numbers separated by dots, like 1.2.43 - followed by an optional build number separated by a +.
@@ -44,7 +44,7 @@ dependencies:
   html: 0.15.4
   vector_math: 2.1.4
   path: 1.9.0
-  flutter_svg: 2.0.10+1
+  flutter_svg: ^2.0.10+1
   notification_permissions: 0.6.1
   flutter_local_notifications: 14.1.5
   onesignal_flutter: ^5.2.0
@@ -76,7 +76,7 @@ dependencies:
   fwfh_webview: ^0.15.0
 
   # VIDEO
-  video_player: ^2.8.6
+  video_player: ^2.8.7
   youtube_player_iframe: 5.1.2
 
   # MAP
@@ -225,6 +225,9 @@ dependencies:
   ### Uncomment file lib/common/tools/in_app_update_for_android.dart
   in_app_update: 4.2.2
   meta_seo: 3.0.9
+  chewie: ^1.8.0
+  flutter_html: ^3.0.0-beta.2
+  shared_preferences: ^2.2.3
 
 dev_dependencies:
   flutter_lints: ^4.0.0
