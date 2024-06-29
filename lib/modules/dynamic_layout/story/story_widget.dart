@@ -97,7 +97,7 @@ class _StoryWidgetState extends State<StoryWidget> {
                                 20),child:
                           SizedBox(
                           width: MediaQuery.of(context).size.width* 0.6,
-                          height: MediaQuery.of(context).size.height* 0.20,
+                          height: MediaQuery.of(context).size.height* 0.18,
                           child: Stack(
                             fit: StackFit.expand,
                             children: [

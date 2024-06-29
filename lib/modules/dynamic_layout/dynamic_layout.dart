@@ -105,15 +105,14 @@ class DynamicLayout extends StatelessWidget {
           List<Article> data = List.from(articleNotifier.articles)
             ..sort((a, b) => a.viewsCount7Days.compareTo(b.viewsCount7Days));
           return Container(
-            margin: EdgeInsets.only(top: 10),
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height * 0.478,
+            height: MediaQuery.of(context).size.height * 0.44,
             child: Stack(
               children: [
                 Positioned(
                   top: 0,
                   child: Container(
-                      height: MediaQuery.of(context).size.height * 0.24,
+                      height: MediaQuery.of(context).size.height * 0.22,
                       width: MediaQuery.of(context).size.width,
                       // margin: EdgeInsets.only(top: 10),
                       child: Column(
@@ -134,7 +133,7 @@ class DynamicLayout extends StatelessWidget {
                 Positioned(
                   bottom: 0,
                     child: Container(
-                        height: MediaQuery.of(context).size.height * 0.24,
+                        height: MediaQuery.of(context).size.height * 0.22,
                         width: MediaQuery.of(context).size.width,
                         // margin: EdgeInsets.only(top: 10),
                         child: Column(
