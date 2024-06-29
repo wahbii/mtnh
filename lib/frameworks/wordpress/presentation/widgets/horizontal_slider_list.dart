@@ -136,7 +136,7 @@ class _BlogItem extends StatelessWidget {
                 child: AspectRatio(
                   aspectRatio: 16/9,
                   child: FluxImage(
-                    imageUrl: blog.mrssThumbnail,
+                    imageUrl: blog.mrssThumbnail ?? "",
                     fit: BoxFit.contain,
                   ),
                 ),
@@ -149,7 +149,7 @@ class _BlogItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    blog.sanitizedTitle,
+                    blog.sanitizedTitle ?? "",
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w800,
@@ -160,9 +160,10 @@ class _BlogItem extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
+                    blog.date == null ? "" : it.DateFormat('d MMMM yyyy').format(blog.date!),
 
-                       it.DateFormat('d MMMM yyyy').format(blog.date)
-                    ,
+
+
                     textAlign: TextAlign.right,
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.secondary,
@@ -170,7 +171,7 @@ class _BlogItem extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    blog.sanitizedExcerpt
+                    (blog.sanitizedExcerpt ?? "")
                         .replaceAll("<p>", "")
                         .replaceAll("</p>", ""),
                     maxLines: 3,

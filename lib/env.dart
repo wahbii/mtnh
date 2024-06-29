@@ -354,12 +354,10 @@ Map<String, dynamic> environment = {
     "background": null,
     "items": [
       {"type": "home", "show": true},
-      {"type": "Articles", "show": true},
-      {"type": "categories", "show": true},
       {"type": "Archives Of Shows", "show": true},
       {"type": "login", "show": true},
       {"type": "category", "show": true},
-      {"type": "shows", "show": true}
+
 
 
     ]

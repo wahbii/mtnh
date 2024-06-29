@@ -7,6 +7,7 @@ import '../../common/config.dart';
 import '../../common/constants.dart';
 import '../../data/boxes.dart';
 import '../../models/app_model.dart';
+import '../../models/posts/article_provider.dart';
 import '../../modules/dynamic_layout/index.dart';
 import '../../widgets/home/index.dart';
 import '../base_screen.dart';
@@ -35,6 +36,7 @@ class _HomeScreenState extends BaseScreen<HomeScreen> {
   @override
   void initState() {
     printLog('[Home] initState');
+    context.read<ArticleNotifier>().loadArticles();
     super.initState();
   }
 

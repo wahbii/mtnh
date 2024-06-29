@@ -21,6 +21,7 @@ import '../models/index.dart'
         UserModel;
 import '../models/posts/article_model.dart';
 import '../models/search_web_model.dart';
+import '../models/shows/shows_model.dart';
 import '../modules/dynamic_layout/geo_search/geo_search_screen.dart';
 import '../modules/dynamic_layout/helper/helper.dart';
 import '../modules/dynamic_layout/index.dart';
@@ -124,7 +125,7 @@ class Routes {
               final cateName = arguments.cateName;
               final tag = arguments.tag;
               final blogs = arguments.data?.cast<Blog>();
-              final title = arguments.title ;
+              final title = arguments.title;
               final config = arguments.config;
               final blogConfig = config != null
                   ? BlogConfig.fromJson(config)
@@ -142,7 +143,20 @@ class Routes {
                 blogModel.tagIds = null;
               }
               print("hello 2 : ${data?.length}");
-              return BlogsPage(blogs: data as List<Article>?, config: blogConfig,title: title,);
+              var article = null;
+              var shows = null;
+              try {
+                article = data as List<Article>?;
+              } catch (e) {}
+              try {
+                shows = data as List<Show>?;
+              } catch (e) {}
+              return BlogsPage(
+                blogs: article,
+                shows: shows,
+                config: blogConfig,
+                title: title,
+              );
             });
           }
 
@@ -394,6 +408,7 @@ class Routes {
           final boost = data.jsonData['boostEngine'];
           boostEngine = boost is bool ? boost : null;
         }
+        print("search $boostEngine");
         return _buildRoute(
           settings,
           (_) => AutoHideKeyboard(
@@ -538,6 +553,7 @@ class Routes {
         return _errorRoute(data.toString());
       case RouteList.tabMenu:
         final data = settings.arguments;
+        print("data${settings.name}");
         if (data is List<TabBarMenuConfig>) {
           return _buildRoute(
             settings,

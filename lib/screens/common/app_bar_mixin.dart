@@ -27,6 +27,7 @@ mixin AppBarMixin<T extends StatefulWidget> on State<T> {
     });
   }
 
+
   @override
   void dispose() {
     screenScrollController?.removeListener(_scrollListener);

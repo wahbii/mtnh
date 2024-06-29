@@ -4,12 +4,14 @@ import 'package:intl/intl.dart';
 import '../../common/tools.dart';
 import '../../models/posts/article_model.dart';
 import '../../models/posts/search_article.dart';
+import '../../models/shows/shows_model.dart';
 import '../../modules/dynamic_layout/index.dart';
 import '../common/flux_image.dart';
 import '../html/index.dart';
 
 class BlogCard extends StatelessWidget {
   final Article? item;
+  final Show? show;
   final width;
   final margin;
   final kSize size;
@@ -19,6 +21,7 @@ class BlogCard extends StatelessWidget {
 
   const BlogCard({
     this.item,
+    this.show,
     this.width,
     this.size = kSize.medium,
     this.height,
@@ -33,7 +36,7 @@ class BlogCard extends StatelessWidget {
       child: ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(10.0)),
         child: ImageResize(
-          url: item!.mrssThumbnail,
+          url: item == null ? "https://static.mhtn.org/wp-content/uploads/2024/06/04141924/stream-poster.jpg" : item!.mrssThumbnail,
           width: imageWidth,
           height: height ?? imageHeight ?? width * 0.60,
           fit: BoxFit.cover,
@@ -49,7 +52,7 @@ class BlogCard extends StatelessWidget {
             color: Colors.white, size: 12),
         const SizedBox(width: 2),
         Text(
-          item!.sanitizedTitle,
+          item!.sanitizedTitle ?? "",
           style: const TextStyle(
             color: Colors.white,
             fontSize: 12,
@@ -100,7 +103,8 @@ class BlogCard extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     Text(
-                      item!.sanitizedTitle,
+                      item == null?show!.name :
+                      item!.sanitizedTitle ??"",
                       style:
                           Theme.of(context).textTheme.headlineSmall?.copyWith(
                                 color: Colors.white,
@@ -113,7 +117,8 @@ class BlogCard extends StatelessWidget {
                       SizedBox(
                         height: 50,
                         child: HtmlWidget(
-                          item!.sanitizedExcerpt,
+                          item == null ? show!.description:
+                          item!.sanitizedExcerpt ?? "",
                           textStyle: const TextStyle(color: Colors.white),
                         ),
                       ),
@@ -123,7 +128,8 @@ class BlogCard extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Text(
-                            DateFormat('d MMMM yyyy').format(item!.date),
+      item == null? "":
+                            DateFormat('d MMMM yyyy').format(item!.date!  ),
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 12,
@@ -160,21 +166,36 @@ class BlogCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  item!.sanitizedTitle,
+            item == null?show!.name :
+              item!.sanitizedTitle ?? "",
                   style: TextStyle(
-                    fontSize: titleFontSize,
+                    fontSize: 14,
                     fontWeight: FontWeight.w600,
                   ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 6),
+                const SizedBox(height: 3),
+                item == null ?  Container() : Text(
+
+                  item?.date == null ? "" : DateFormat('d MMMM yyyy').format(item!.date!),
+                  style: TextStyle(
+                    color: theme.colorScheme.secondary,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700
+                  ),
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                ),
                 Text(
-                  DateFormat('d MMMM yyyy').format(item!.date),
+                    item == null ? show?.description ?? "":
+                  item!.sanitizedExcerpt??"",
                   style: TextStyle(
                     color: theme.colorScheme.secondary,
                     fontSize: 12,
                   ),
+                  maxLines:item == null ? 4: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),

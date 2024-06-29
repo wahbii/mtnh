@@ -50,7 +50,6 @@ class DynamicLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     final appModel = Provider.of<AppModel>(context, listen: true);
     final useDesktopStyle = Layout.isDisplayDesktop(context);
-    context.read<ArticleNotifier>().loadArticles();
     final liveurl = context.read<ArticleNotifier>().getLiveUrl();
 
     var config = Map<String, dynamic>.from(configLayout);

@@ -66,6 +66,29 @@ class _StoryCardState extends State<StoryCard> {
                   ),
                 ),
               ),
+              Positioned(
+                  bottom: 10,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
+                        ),
+                        color: Colors.black.withOpacity(0.4)),
+                    child: Text(
+                      story?.sanitizedTitle ?? "",
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.white,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ))
             ],
           ),
         );

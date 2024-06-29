@@ -6,6 +6,7 @@ import '../../generated/l10n.dart';
 import '../../models/entities/filter_sorty_by.dart';
 import '../../models/index.dart' show AppModel, Blog, BlogModel;
 import '../../models/posts/article_model.dart';
+import '../../models/shows/shows_model.dart';
 import '../../modules/dynamic_layout/config/blog_config.dart';
 import '../../services/index.dart';
 import '../../widgets/backdrop/backdrop.dart';
@@ -15,10 +16,11 @@ import '../common/app_bar_mixin.dart';
 
 class BlogsPage extends StatefulWidget {
   final List<Article>? blogs;
+  final List<Show>? shows;
   final String? title ;
   final BlogConfig config;
 
-  const BlogsPage({this.blogs,this.title ,required this.config});
+  const BlogsPage({this.blogs,this.shows ,this.title ,required this.config});
 
   @override
   State<BlogsPage> createState() => _BlogsPageState();
@@ -79,12 +81,12 @@ class _BlogsPageState extends State<BlogsPage>
       switch( sortBy?.orderType){
         case OrderType.asc :{
           setState(() {
-            widget.blogs?.sort((a, b) => a.date.compareTo(b.date));
+            widget.blogs?.sort((a, b) => (a.date ?? DateTime.timestamp()).compareTo((b.date ?? DateTime.timestamp())));
           });
         }
         case OrderType.desc :{
           setState(() {
-            widget.blogs?.sort((a, b) => b.date.compareTo(a.date));
+            widget.blogs?.sort((a, b) => (b.date ?? DateTime.timestamp()).compareTo((a.date ?? DateTime.timestamp())));
           });
         }
         case null:
@@ -94,12 +96,12 @@ class _BlogsPageState extends State<BlogsPage>
       switch( sortBy?.orderType){
         case OrderType.asc :{
           setState(() {
-            widget.blogs?.sort((a, b) => a.sanitizedTitle.compareTo(b.sanitizedTitle));
+            widget.blogs?.sort((a, b) => (a.sanitizedTitle ?? "").compareTo((b.sanitizedTitle ?? "")));
           });
         }
         case OrderType.desc :{
           setState(() {
-            widget.blogs?.sort((a, b) => b.sanitizedTitle.compareTo(a.sanitizedTitle));
+            widget.blogs?.sort((a, b) => (b.sanitizedTitle ?? "").compareTo((a.sanitizedTitle ?? "")));
 
           });
         }
@@ -122,12 +124,15 @@ class _BlogsPageState extends State<BlogsPage>
   Widget build(BuildContext context) {
     final title = widget.title;
     var textColor = Colors.white;
+    var data = widget.shows == null ? widget.blogs : widget.shows ;
+
     // list
     _PostBackdrop backdrop({blogs, isFetching, errMsg, isEnd}) => _PostBackdrop(
           backdrop: Backdrop(
             hasAppBar: showAppBar(RouteList.backdrop),
             frontLayer: BlogListBackdrop(
               blog: widget.blogs,
+              shows: widget.shows,
               onRefresh: onRefresh,
               onLoadMore: onLoadMore,
               isFetching: false,
@@ -161,14 +166,13 @@ class _BlogsPageState extends State<BlogsPage>
             ),
             controller: _controller,
             isBlog: true,
-            showFilter: isEnableFilter,
+            showFilter: (widget.blogs == null ) ? false : true  ,
           ),
         );
-
     return  renderScaffold(
       routeName: RouteList.backdrop,
       child: backdrop(
-        blogs: widget.blogs,
+        blogs: data,
         isFetching: false,
         errMsg: "",
         isEnd: false,

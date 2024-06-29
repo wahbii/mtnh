@@ -264,8 +264,6 @@ class DefaultConfig {
       "background": null,
       "items": [
         {"type": "home", "show": true},
-        {"type": "Articles", "show": true},
-        {"type": "categories", "show": true},
         {"type": "Archives Of Shows", "show": true},
         {"type": "login", "show": true},
       ]

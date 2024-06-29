@@ -46,7 +46,7 @@ class WishlistItem extends StatelessWidget with ActionButtonMixin {
                             ClipRRect(
                               borderRadius: BorderRadius.circular(6.0),
                               child: FluxImage(
-                                imageUrl: product.mrssThumbnail
+                                imageUrl: product.mrssThumbnail ?? ""
                                 ,
                                 fit: BoxFit.cover,
                                 width: 100,

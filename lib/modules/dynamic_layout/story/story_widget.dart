@@ -115,6 +115,8 @@ class _StoryWidgetState extends State<StoryWidget> {
                                   ),
                                 ),
                               ),
+
+
                               _openFullScreenStory(context, index),
                             ],
                           ),

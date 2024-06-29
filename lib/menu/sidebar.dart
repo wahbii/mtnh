@@ -13,6 +13,7 @@ import '../models/index.dart'
     show AppModel, BackDropArguments, Category, CategoryModel, UserModel;
 import '../models/posts/article_model.dart';
 import '../models/posts/article_provider.dart';
+import '../models/shows/notifier_show.dart';
 import '../modules/dynamic_layout/config/app_config.dart';
 import '../modules/dynamic_layout/helper/helper.dart';
 import '../routes/flux_navigate.dart';
@@ -110,11 +111,14 @@ class MenuBarState extends State<SideBarMenu> {
               ...List.generate(
                 drawer.items?.length ?? 0,
                 (index) {
-                  return drawerItem(
-                    drawer.items![index].type ?? "",
-                    drawer.items![index],
-                    drawer.subDrawerItem ?? {},
-                  );
+                  return
+                         drawerItem(
+                          drawer.items![index].type ?? "",
+                          drawer.items![index],
+                          drawer.subDrawerItem ?? {},
+                        );
+
+
                 },
               ),
               Layout.isDisplayDesktop(context)
@@ -200,7 +204,13 @@ class MenuBarState extends State<SideBarMenu> {
               title,
               style: textStyle,
             ),
-            onTap: () => pushNavigator(name: RouteList.profile),
+            onTap: () =>  FluxNavigate.pushNamed(
+              RouteList.backdrop,
+              arguments: BackDropArguments(
+                  data: null,
+                  title: "Archives Of Shows"
+              ),
+            ),
           );
         }
 
@@ -248,7 +258,7 @@ class MenuBarState extends State<SideBarMenu> {
         }
       case 'shows':
         {
-          return buildListCategory("By $title",[]);
+          return Container();
         }
       default:
         {

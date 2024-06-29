@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -28,15 +30,21 @@ class _BlogWishListScreenState extends State<BlogWishListScreen>
   void initState() {
     super.initState();
     screenScrollController = _scrollController;
-    _loadArticles();
+    startPeriodicTimer();
 
   }
 
   Future<void> _loadArticles() async {
     final List<Article> articles = await SharedPreferencesHelper.getArticles();
-    print("hello init ${articles.length}" );
     setState(() {
       _articles = articles;
+    });
+  }
+
+
+  void startPeriodicTimer() {
+    Timer.periodic(Duration(seconds: 3), (timer) {
+      _loadArticles();
     });
   }
 
@@ -218,13 +226,13 @@ class _BlogWishListItem extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  blog.sanitizedTitle,
+                                  blog.sanitizedTitle ?? "",
                                   style: localTheme.textTheme.bodySmall,
                                 ),
                                 const SizedBox(height: 7),
                                 Text(
-    DateFormat('d MMMM yyyy').format(blog.date)
-                                  ,
+    blog!.date == null ? "" : DateFormat('d MMMM yyyy').format(blog!.date!),
+
                                   style: Theme.of(context)
                                       .textTheme
                                       .headlineSmall

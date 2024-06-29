@@ -1,13 +1,13 @@
 class Article {
   final int id;
-  final DateTime date;
-  final String content;
-  final String streamUrl;
+  final DateTime? date;
+  final String? content;
+  final String? streamUrl;
   final int viewsCount7Days;
   final List<String> categoryTitles;
-  final String sanitizedTitle;
-  final String sanitizedExcerpt;
-  final String mrssThumbnail;
+  final String? sanitizedTitle;
+  final String? sanitizedExcerpt;
+  final String? mrssThumbnail;
 
   Article({
     required this.id,
@@ -38,7 +38,7 @@ class Article {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'date': date.toIso8601String(),
+      'date': date?.toIso8601String(),
       'content': {'rendered': content, 'protected': false},
       'wpcf-stream_url': streamUrl,
       'post_views_count_7_day_total': viewsCount7Days.toString(),

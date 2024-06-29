@@ -26,6 +26,7 @@ class ArticleNotifier extends ChangeNotifier {
 
     try {
       _articles = await _articleService.fetchArticles();
+      print("articles :${articles.length}");
       article = _articles.firstOrNull ;
       _errorMessage = null;
     } catch (error) {

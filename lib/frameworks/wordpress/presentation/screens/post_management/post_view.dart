@@ -57,7 +57,7 @@ class PostView extends StatelessWidget with BlogActionButtonMixin {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      blogs![index!].sanitizedTitle,
+                      blogs![index!].sanitizedTitle?? "",
                       style: TextStyle(
                         fontSize: titleFontSize,
                         fontWeight: FontWeight.w800,
@@ -70,7 +70,8 @@ class PostView extends StatelessWidget with BlogActionButtonMixin {
                       height: imageWidth / 35,
                     ),
                     Text(
-                        DateFormat('d MMMM yyyy').format( blogs![index!].date),
+                      blogs![index!].date == null ? "" : DateFormat('d MMMM yyyy').format(blogs![index!].date!),
+
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.secondary,
                       ),
@@ -79,7 +80,7 @@ class PostView extends StatelessWidget with BlogActionButtonMixin {
                       height: 10,
                     ),
                     blogs![index!].sanitizedExcerpt == 'Loading...'
-                        ? Text(blogs![index!].sanitizedExcerpt)
+                        ? Text(blogs![index!].sanitizedExcerpt ?? "")
                         : Text(
                             parse(blogs![index!].sanitizedExcerpt).documentElement!.text,
                             maxLines: 3,

@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
+import '../../common/config.dart';
 import '../../common/constants.dart';
 import '../../common/tools.dart';
-import '../../generated/l10n.dart';
-import '../../models/index.dart' show Blog;
 import '../../models/posts/article_model.dart';
+import '../../models/shows/notifier_show.dart';
+import '../../models/shows/post_by_show_provider.dart';
+import '../../models/shows/shows_model.dart';
 import '../../modules/dynamic_layout/helper/helper.dart';
 import '../backdrop/backdrop_constants.dart';
 import 'blog_action_button_mixin.dart';
 import 'blog_card_view.dart';
 
 class BlogListBackdrop extends StatefulWidget {
-  final  List<Article>? blog;
+  final List<Article>? blog;
+  final List<Show>? shows;
   final bool? isFetching;
   final bool? isEnd;
   final String? errMsg;
@@ -31,6 +35,7 @@ class BlogListBackdrop extends StatefulWidget {
     this.width,
     this.padding = 8.0,
     this.onRefresh,
+    this.shows,
     required this.onLoadMore,
     this.layout = 'list',
   });
@@ -43,10 +48,10 @@ class _BlogListBackdropState extends State<BlogListBackdrop>
     with BlogActionButtonMixin {
   late RefreshController _refreshController;
   int _page = 1;
+  bool loadingShowPost = false;
 
-  List<Article> emptyList = const [
-
-  ];
+  String selectedTitle = "";
+  List<Article> emptyList = const [];
 
   @override
   void initState() {
@@ -129,37 +134,30 @@ class _BlogListBackdropState extends State<BlogListBackdrop>
     final crossAxisCount = itemSize.$2;
 
     final List<Article>? blogsList = widget.blog;
+    final List<Show>? showsList = widget.shows;
 
     Widget typeList = const SizedBox();
-   print("hello : ${blogsList?.length}");
-    if (blogsList == null || blogsList.isEmpty) {
-      typeList = Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            S.of(context).notFindResult,
-            style: Theme.of(context).textTheme.bodyLarge,
-          ),
-        ],
-      );
-    } else {
-      switch (widget.layout) {
-        case Layout.listTile:
-          typeList = buildListView(
-            blogs: blogsList,
-            widthContent: widthContent,
-          );
-          break;
-        case Layout.columns:
-        case Layout.list:
-        default:
-          typeList = buildGridView(
-            childAspectRatio: childAspectRatio,
-            crossAxisCount: crossAxisCount,
-            blogsList: blogsList,
-            widthContent: widthContent,
-          );
-      }
+    if ((showsList == null || showsList.isEmpty) &&
+        (blogsList == null || blogsList.isEmpty)) {
+      context.read<ShowProvider>().fetchShows();
+    }
+    switch (widget.layout) {
+      case Layout.listTile:
+        typeList = buildListView(
+          blogs: blogsList,
+          widthContent: widthContent,
+        );
+        break;
+      case Layout.columns:
+      case Layout.list:
+      default:
+        typeList = buildGridView(
+          childAspectRatio: childAspectRatio,
+          crossAxisCount: crossAxisCount,
+          blogsList: blogsList,
+          widthContent: widthContent,
+          showList: showsList,
+        );
     }
 
     return SmartRefresher(
@@ -178,36 +176,102 @@ class _BlogListBackdropState extends State<BlogListBackdrop>
     required int crossAxisCount,
     required double childAspectRatio,
     double? widthContent,
-    required List<Article> blogsList,
+    required List<Article>? blogsList,
+    required List<Show>? showList,
   }) {
-    return GridView.builder(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: crossAxisCount,
-        childAspectRatio: childAspectRatio,
-      ),
-      cacheExtent: 500.0,
-      itemCount: blogsList.length,
-      itemBuilder: (context, i) {
-        return BlogCard(
-          item: blogsList[i],
-          width: widthContent,
-          margin: 8.0,
-          onTap: () => onTapBlog(article: blogsList[i],),
+    if (blogsList != null) {
+      return GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: crossAxisCount,
+          childAspectRatio: childAspectRatio,
+        ),
+        cacheExtent: 500.0,
+        itemCount: blogsList.length,
+        itemBuilder: (context, i) {
+          return BlogCard(
+            item: blogsList[i],
+            width: widthContent,
+            margin: 8.0,
+            onTap: () => onTapBlog(
+              article: blogsList[i],
+            ),
+          );
+        },
+      );
+    } else {
+      if(loadingShowPost){
+
+        return Consumer<ShowPostProvider>(builder: (context, articleNotifier, child) {
+          if (articleNotifier.isLoading) {
+            return kLoadingWidget(context);
+          }
+
+          return GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: crossAxisCount,
+              childAspectRatio: childAspectRatio,
+            ),
+            cacheExtent: 500.0,
+            itemCount: articleNotifier.articles.length,
+            itemBuilder: (context, i) {
+              return BlogCard(
+                item: articleNotifier.articles[i],
+                width: widthContent,
+                margin: 8.0,
+                onTap: () => onTapBlog(
+                  article: articleNotifier.articles[i],
+                ),
+              );
+            },
+          );
+        });
+
+      }else{
+
+
+      return Consumer<ShowProvider>(builder: (context, articleNotifier, child) {
+        if (articleNotifier.isLoading) {
+          return kLoadingWidget(context);
+        }
+
+        return GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: crossAxisCount,
+            childAspectRatio: childAspectRatio,
+          ),
+          cacheExtent: 500.0,
+          itemCount: articleNotifier.shows.length,
+          itemBuilder: (context, i) {
+            return BlogCard(
+              show: articleNotifier.shows[i],
+              width: widthContent,
+              margin: 8.0,
+              onTap: () {
+                setState(() {
+                  loadingShowPost = true;
+                  selectedTitle = articleNotifier.shows[i].name ?? "";
+                });
+                context
+                    .read<ShowPostProvider>()
+                    .fetchPostShows(articleNotifier.shows[i].id.toString());
+              },
+            );
+          },
         );
-      },
-    );
+      }); }
+    }
   }
 
   Widget buildListView({
-    required List<Article> blogs,
+    required List<Article>? blogs,
     double? widthContent,
   }) {
     return ListView.builder(
-      itemCount: blogs.length,
+      itemCount: blogs?.length ?? 0,
       itemBuilder: (_, index) => BlogCard(
-        item: blogs[index],
-        width: widthContent, onTap: () {  },
-       // onTap: () => onTapBlog(blog: blogs[index], blogs: blogs),
+        item: blogs?[index],
+        width: widthContent, onTap: () {},
+        // onTap: () => onTapBlog(blog: blogs[index], blogs: blogs),
       ),
     );
   }
@@ -230,10 +294,23 @@ class _BlogListBackdropState extends State<BlogListBackdrop>
       itemCount: blogs.length,
       itemBuilder: (context, index) => BlogCard(
         item: blogs[index],
-        width: MediaQuery.of(context).size.width / 2, onTap: () {  },
+        width: MediaQuery.of(context).size.width / 2, onTap: () {},
         //onTap: () => onTapBlog(blog: blogs[index], blogs: blogs),
       ),
       // staggeredTileBuilder: (index) => const StaggeredTile.fit(2),
     );
   }
 }
+/*
+if(articleNotifier.articles.isNotEmpty){
+FluxNavigate.pushNamed(
+RouteList.backdrop,
+arguments: BackDropArguments(
+data: articleNotifier.articles,
+title :selectedTitle
+),
+);
+}
+
+
+*/

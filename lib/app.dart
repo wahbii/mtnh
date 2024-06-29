@@ -27,6 +27,8 @@ import 'models/index.dart';
 import 'models/posts/article_detail_provider.dart';
 import 'models/posts/article_provider.dart';
 import 'models/posts/search_provider.dart';
+import 'models/shows/notifier_show.dart';
+import 'models/shows/post_by_show_provider.dart';
 import 'models/tera_wallet/wallet_model.dart';
 import 'modules/dynamic_layout/config/app_config.dart';
 import 'modules/meta_seo/meta_seo_service.dart';
@@ -400,6 +402,8 @@ class AppState extends State<App>
             textDirection: TextDirection.rtl,
             child: MultiProvider(
               providers: [
+                ChangeNotifierProvider(create: (_) => ShowPostProvider()),
+                ChangeNotifierProvider(create: (_) => ShowProvider()),
                 ChangeNotifierProvider(create: (_) => ArticleDetailNotifier()),
                 ChangeNotifierProvider(create: (_) => SearchNotifier()),
                 ChangeNotifierProvider(create: (_) => ArticleNotifier()),

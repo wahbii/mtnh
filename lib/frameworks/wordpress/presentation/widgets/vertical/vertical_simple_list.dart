@@ -71,7 +71,7 @@ class SimpleListView extends StatelessWidget with BlogActionButtonMixin {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        item.sanitizedTitle,
+                        item.sanitizedTitle ?? "",
                         style: TextStyle(
                           fontSize: titleFontSize,
                           fontWeight: FontWeight.w600,
@@ -81,7 +81,8 @@ class SimpleListView extends StatelessWidget with BlogActionButtonMixin {
                       ),
                       const SizedBox(height: 10.0),
                       Text(
-                        DateFormat('d MMMM yyyy').format( item.date),
+                        item.date == null ? " " :
+                        DateFormat('d MMMM yyyy').format( item.date!),
 
                         style: TextStyle(
                           fontSize: 14,

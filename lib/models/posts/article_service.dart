@@ -4,13 +4,23 @@ import 'package:http/http.dart' as http;
 import 'article_model.dart'; // Ensure you import the Article model
 
 class ArticleService {
-  final String apiUrl = "https://mhtn.org/wp-json/wp/v2/posts/?_fields[]=post_views_count_7_day_total&_fields[]=sanitized_title&_fields[]=sanitized_excerpt&_fields[]=wpcf-stream_url&_fields[]=category_titles&_fields[]=id&_fields[]=date&per_page=50&page=1&_fields[]=mrss_thumbnail&_fields[]=content";
+  final String apiUrl = "https://mhtn.org/wp-json/wp/v2/posts/?_fields[]=post_views_count_7_day_total&_fields[]=sanitized_title&_fields[]=sanitized_excerpt&_fields[]=wpcf-stream_url&_fields[]=category_titles&_fields[]=id&_fields[]=date&per_page=100&page=10&_fields[]=mrss_thumbnail&_fields[]=content";
   final String apiSearch = "https://mhtn.org/wp-json/wp/v2/search/?search=";
   final String apiDetail ="https://mhtn.org/wp-json/wp/v2/posts/";
-  final String detailAttribute = "?_fields[]=post_views_count_7_day_total&_fields[]=sanitized_title&_fields[]=sanitized_excerpt&_fields[]=wpcf-stream_url&_fields[]=category_titles&_fields[]=id&_fields[]=date&per_page=50&page=1&_fields[]=mrss_thumbnail&_fields[]=content";
-
+  final String detailAttribute = "?_fields[]=post_views_count_7_day_total&_fields[]=sanitized_title&_fields[]=sanitized_excerpt&_fields[]=wpcf-stream_url&_fields[]=category_titles&_fields[]=id&_fields[]=date&per_page=100&page=1&_fields[]=mrss_thumbnail&_fields[]=content";
+  final String postShowApi = "https://mhtn.org/wp-json/wp/v2/posts/?show=";
   Future<List<Article>> fetchArticles() async {
     final response = await http.get(Uri.parse(apiUrl));
+
+    if (response.statusCode == 200) {
+      List<dynamic> data = json.decode(response.body);
+      return data.map((item) => Article.fromJson(item)).toList();
+    } else {
+      throw Exception("Failed to load articles");
+    }
+  }
+  Future<List<Article>> fetchArticlesByShow(String id) async {
+    final response = await http.get(Uri.parse(apiUrl+id+detailAttribute));
 
     if (response.statusCode == 200) {
       List<dynamic> data = json.decode(response.body);

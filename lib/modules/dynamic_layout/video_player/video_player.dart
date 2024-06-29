@@ -44,6 +44,7 @@ class _VideoState extends State<VideoPlayerLive> {
       aspectRatio: 16/9,
       autoPlay: false,
       looping: true,
+
       errorBuilder: (context, errorMessage) {
         return Center(
           child: Text(

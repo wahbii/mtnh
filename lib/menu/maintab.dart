@@ -387,16 +387,20 @@ extension TabBarMenuExtention on MainTabsState {
   /// on change tabBar name
   void _onChangeTab(String? nameTab, {bool allowPush = true}) {
     if (saveIndexTab[nameTab] != null) {
-      tabController.animateTo(saveIndexTab[nameTab]);
-      _emitChildTabName();
+      setState(() {
+        tabController.animateTo(saveIndexTab[nameTab]!);
+        _emitChildTabName();
+      });
     } else if (allowPush) {
-      if (nameTab.toString() == RouteList.profile) {
-        FluxNavigate.pushNamed(nameTab.toString(),
-            forceRootNavigator: true,
-            arguments: TabBarMenuConfig(jsonData: {}));
-      } else {
-        FluxNavigate.pushNamed(nameTab.toString(), forceRootNavigator: true);
-      }
+      setState(() {
+        if (nameTab.toString() == RouteList.profile) {
+          FluxNavigate.pushNamed(nameTab.toString(),
+              forceRootNavigator: true,
+              arguments: TabBarMenuConfig(jsonData: {}));
+        } else {
+          FluxNavigate.pushNamed(nameTab.toString(), forceRootNavigator: true);
+        }
+      });
     }
   }
 
@@ -426,7 +430,6 @@ extension TabBarMenuExtention on MainTabsState {
           action: (screenName) {
             final currentScreenOfTab = childTabName[initialRoute!];
             if (currentScreenOfTab == screenName) return;
-
             childTabName[initialRoute!] = screenName;
             OverlayControlDelegate().emitTab?.call(screenName);
           },
@@ -594,8 +597,7 @@ extension TabBarMenuExtention on MainTabsState {
         },
       };
     }
-    print("${tabData?.layout.toString()}");
-    if(tabData?.layout.toString() == "wishlist")_initTabData(context);
+
     if (tabData != null && tabData.isFullscreen) {
 
       FluxNavigate.pushNamed(
