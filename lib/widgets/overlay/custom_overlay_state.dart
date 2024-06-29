@@ -103,7 +103,7 @@ abstract class CustomOverlayState<T extends StatefulWidget>
     eventBus.fire(EventScreenChanged(screenName: routeName));
     printLog('[ScreenName] $routeName');
     final uri = Uri.parse(routeName ?? '');
-    Services().advertisement.handleAd(uri.path);
+    //Services().advertisement.handleAd(uri.path);
     handleSmartChat(uri.path);
     overlayController.sink.add(true);
   }

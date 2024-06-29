@@ -86,7 +86,6 @@ class _StoryWidgetState extends State<StoryWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    space,
                     ...List.generate(
                       listStoryCard.length,
                       (index) {
@@ -97,8 +96,8 @@ class _StoryWidgetState extends State<StoryWidget> {
                             borderRadius: BorderRadius.circular(
                                 20),child:
                           SizedBox(
-                          width: 250,
-                          height: 150,
+                          width: MediaQuery.of(context).size.width* 0.6,
+                          height: MediaQuery.of(context).size.height* 0.20,
                           child: Stack(
                             fit: StackFit.expand,
                             children: [

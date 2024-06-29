@@ -165,11 +165,11 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${googleApiKeyAndroid}" />
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="${adMobAppIdAndroid}" />
+        <!--    <meta-data
+               android:name="com.google.android.gms.ads.APPLICATION_ID"
+               android:value="${adMobAppIdAndroid}" />-->
 
-        <!-- Facebook Login configuration -->
+           <!-- Facebook Login configuration -->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebookAppId" />

@@ -80,7 +80,7 @@ class _HorizontalSliderListState extends State<HorizontalSliderList>
                   Column(
                     children: section.value.take(3).map((article) {
                       return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 4.0),
+                          padding: const EdgeInsets.symmetric(vertical: 0),
                           child: _BlogItem(
                             blog: article,
                             type: "imageOnTheRight",
@@ -119,7 +119,7 @@ class _BlogItem extends StatelessWidget {
     const direction = TextDirection.ltr;
     return Container(
       height: MediaQuery.of(context).size.height * 0.14,
-      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 6.0),
+      padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 6.0),
       child: GestureDetector(
         onTap: onTap,
         child: Row(

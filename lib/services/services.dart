@@ -29,7 +29,7 @@ class Services with ConfigMixin, WordPressMixin, DigitsMobileLoginServiceMixin {
 
   /// using AdvertisementService when disable the Advertisement
   // final AdvertisementService advertisement = AdvertisementService();
-  final AdvertisementService advertisement = AdvertisementServiceImpl();
+ // final AdvertisementService advertisement = AdvertisementServiceImpl();
 
   final ChatServices chatServices = ChatServices();
 

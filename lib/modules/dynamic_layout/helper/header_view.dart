@@ -33,12 +33,12 @@ class HeaderView extends StatelessWidget {
       width: screenSize.width,
       child: Container(
         color: Theme.of(context).colorScheme.surface,
-        margin: EdgeInsets.only(top: verticalMargin!),
+
         padding: EdgeInsets.only(
           left: horizontalMargin ?? 16.0,
-          top: verticalMargin!,
+          top: 0,
           right: horizontalMargin ?? 8.0,
-          bottom: verticalMargin!,
+          bottom: 5,
         ),
         child: Row(
           textBaseline: TextBaseline.alphabetic,
@@ -48,9 +48,7 @@ class HeaderView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (isDesktop) ...[
-                    const SizedBox(height: 16),
-                  ],
+
                   Text(
                     headerText ?? '',
                     style: isDesktop

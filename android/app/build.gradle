@@ -25,7 +25,7 @@ if (localPropertiesFile.exists()) {
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
-    flutterVersionCode = '1'
+    flutterVersionCode = '2'
 }
 
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
@@ -69,7 +69,6 @@ if (envPropsFile.exists()) {
     }
 }
 
-
 android {
     compileSdkVersion 34
 
@@ -102,26 +101,27 @@ android {
         versionName flutterVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
+        ndk {
+            abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+        }
 
-        // // Zoho SalesIQ Mobilisten
-        // Comment `resConfigs "en"` to fix Zoho SaleIQ not support
-        // multi-language on Android.
+        // Comment `resConfigs "en"` to fix Zoho SaleIQ not support multi-language on Android.
         // Un-comment to reduce build size.
         resConfigs "en"
 
         manifestPlaceholders += [
-            envatoPurchaseCode: envProperties['envatoPurchaseCode'],
-            websiteUrl: envProperties['websiteUrl'],
-            websiteDomain: envProperties['websiteDomain'],
-            customScheme: envProperties['customScheme'],
-            googleApiKeyAndroid: envProperties['googleApiKeyAndroid'],
-            adMobAppIdAndroid: envProperties['adMobAppIdAndroid'],
-            facebookClientToken: envProperties['facebookClientToken'],
-            facebookLoginProtocolScheme: envProperties['facebookLoginProtocolScheme']
+                envatoPurchaseCode: envProperties['envatoPurchaseCode'],
+                websiteUrl: envProperties['websiteUrl'],
+                websiteDomain: envProperties['websiteDomain'],
+                customScheme: envProperties['customScheme'],
+                googleApiKeyAndroid: envProperties['googleApiKeyAndroid'],
+                adMobAppIdAndroid: envProperties['adMobAppIdAndroid'],
+                facebookClientToken: envProperties['facebookClientToken'],
+                facebookLoginProtocolScheme: envProperties['facebookLoginProtocolScheme']
         ]
 
         resValue 'string', 'facebookAppId', envProperties['facebookAppId']
-        resValue 'string', 'app_name', envProperties['appName']
+        resValue 'string', 'app_name', envProperties['appName']  // Fixed line
     }
 
     signingConfigs {
@@ -143,7 +143,7 @@ android {
         }
 
         debug {
-           // signingConfig signingConfigs.release
+            // signingConfig signingConfigs.release
         }
     }
 }
@@ -167,7 +167,7 @@ googleServices { disableVersionCheck = true }
 
 task copyGoogleServices(type: Copy) {
     from '../../configs'
-    //include 'google-services.json'
+    // include 'google-services.json'
     into '.'
 }
 
@@ -176,7 +176,6 @@ task copyConfigFiles(type: Copy) {
     include '**'
     into '../../'
 }
-
 
 println "🔧 Copying configs/google-services.json to android/app/google-services.json"
 preBuild.dependsOn(copyGoogleServices)
