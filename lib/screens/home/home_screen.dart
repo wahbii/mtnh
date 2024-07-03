@@ -11,6 +11,8 @@ import '../../models/posts/article_provider.dart';
 import '../../modules/dynamic_layout/index.dart';
 import '../../widgets/home/index.dart';
 import '../base_screen.dart';
+import 'package:flutter/scheduler.dart'; // Import this for SchedulerBinding
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({this.scrollController});
@@ -36,7 +38,11 @@ class _HomeScreenState extends BaseScreen<HomeScreen> {
   @override
   void initState() {
     printLog('[Home] initState');
-    context.read<ArticleNotifier>().loadArticles();
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      // Assuming ArticleNotifier is a ChangeNotifier
+      final articleNotifier = Provider.of<ArticleNotifier>(context, listen: false);
+      articleNotifier.loadArticles();
+    });
     super.initState();
   }
 

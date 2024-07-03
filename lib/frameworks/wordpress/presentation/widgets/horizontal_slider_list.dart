@@ -55,13 +55,17 @@ class _HorizontalSliderListState extends State<HorizontalSliderList>
 
 
 
-    return BackgroundColorWidget(
+     return BackgroundColorWidget(
       enable: enableBackground,
       child: ValueListenableBuilder<List<MapEntry<String, List<Article>>>?>(
         valueListenable: _listBlogNotifier,
         builder: (context, value, child) {
+          if (value == null) {
+            return Center(child: CircularProgressIndicator()); // Handle the null case, maybe show a loading indicator
+          }
+
           var body = Column(
-            children: value!.map((section) {
+            children: value.map((section) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -72,22 +76,22 @@ class _HorizontalSliderListState extends State<HorizontalSliderList>
                     callback: () => FluxNavigate.pushNamed(
                       RouteList.backdrop,
                       arguments: BackDropArguments(
-                        data: section.value,
-                        title: section.key
+                          data: section.value,
+                          title: section.key
                       ),
                     ),
                   ),
                   Column(
                     children: section.value.take(3).map((article) {
                       return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 0),
-                          child: _BlogItem(
-                            blog: article,
-                            type: "imageOnTheRight",
-                            imageBorder: 12.0,
-                            onTap: () => onTapBlog(article: article, ),
-
-                          ));
+                        padding: const EdgeInsets.symmetric(vertical: 0),
+                        child: _BlogItem(
+                          blog: article,
+                          type: "imageOnTheRight",
+                          imageBorder: 12.0,
+                          onTap: () => onTapBlog(article: article),
+                        ),
+                      );
                     }).toList(),
                   ),
                 ],
@@ -98,6 +102,7 @@ class _HorizontalSliderListState extends State<HorizontalSliderList>
         },
       ),
     );
+    ;
   }
 }
 

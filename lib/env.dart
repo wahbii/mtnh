@@ -6,9 +6,9 @@ Map<String, dynamic> environment = {
 
     /// 🌍 The register URL domain that matches with Envato Purchase Code
     /// 🔑 Also, make sure to update the envatoPurchaseCode from configs/env.properties
-    'url': 'https://news.inspireui.com',
+    'url': '',
     'forgetPassword':
-        'https://news.inspireui.com/wp-login.php?action=lostpassword',
+        '',
   },
 
   /// ➡️ lib/common/config/general.dart
