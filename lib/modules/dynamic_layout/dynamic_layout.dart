@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:inspireui/widgets/header_view/header_view.dart';
 import 'package:provider/provider.dart';
-import '../../../../modules/dynamic_layout/helper/header_view.dart' as header;
 
+import '../../../../modules/dynamic_layout/helper/header_view.dart' as header;
 import '../../common/config.dart';
 import '../../common/constants.dart';
 import '../../common/tools.dart';
@@ -45,63 +44,63 @@ class DynamicLayout extends StatelessWidget {
         'web' == config['useFor']) {
       return const SizedBox();
     }
+    return Consumer<ArticleNotifier>(
+        builder: (context, articleNotifier, child) {
+      if (articleNotifier.isLoading) {
+        return kLoadingWidget(context);
+      }
 
-    switch (config['layout']) {
-      case Layout.logo:
-        final themeConfig = appModel.themeConfig;
-        return Logo(
-          config: LogoConfig.fromJson(config),
-          logo: themeConfig.logo,
-          totalCart:
-              Provider.of<CartModel>(context, listen: true).totalCartQuantity,
-          notificationCount:
-              Provider.of<NotificationModel>(context).unreadCount,
-          onSearch: () {
-            FluxNavigate.pushNamed(RouteList.homeSearch);
-          },
-          onCheckout: () {
-            FluxNavigate.pushNamed(RouteList.cart);
-          },
-          onTapNotifications: () {
-            FluxNavigate.pushNamed(RouteList.notify);
-          },
-          onTapDrawerMenu: () => NavigateTools.onTapOpenDrawerMenu(context),
-        );
+      if (articleNotifier.errorMessage != null) {
+        return Center(child: Text(articleNotifier.errorMessage!));
+      }
 
-      case Layout.category:
-        return Padding(
-          padding: const EdgeInsets.only(
-            left: 0.0,
-            top: 0,
-          ),
-          child: Text(
-            "Watch Mental Health TV Network Now",
-            textDirection: TextDirection.ltr,
-            textAlign: TextAlign.start,
-            style: TextStyle(fontSize: 20, fontFamily: "Roboto"),
-          ),
-        );
+      switch (config['layout']) {
+        case Layout.logo:
+          final themeConfig = appModel.themeConfig;
+          return Logo(
+            config: LogoConfig.fromJson(config),
+            logo: themeConfig.logo,
+            totalCart:
+                Provider.of<CartModel>(context, listen: true).totalCartQuantity,
+            notificationCount:
+                Provider.of<NotificationModel>(context).unreadCount,
+            onSearch: () {
+              FluxNavigate.pushNamed(RouteList.homeSearch);
+            },
+            onCheckout: () {
+              FluxNavigate.pushNamed(RouteList.cart);
+            },
+            onTapNotifications: () {
+              FluxNavigate.pushNamed(RouteList.notify);
+            },
+            onTapDrawerMenu: () => NavigateTools.onTapOpenDrawerMenu(context),
+          );
 
-      case Layout.bannerImage:
-        return Container(
-            height: 250,
-            width: MediaQuery.of(context).size.width,
-            child: VideoPlayerLive(
-              url: liveurl,
-              placeHolder:
-                  "https://static.mhtn.org/wp-content/uploads/2024/06/04141924/stream-poster.jpg",
-            ));
+        case Layout.category:
+          return Padding(
+            padding: const EdgeInsets.only(
+              left: 0.0,
+              top: 0,
+            ),
+            child: Text(
+              "Watch Mental Health TV Network Now",
+              textDirection: TextDirection.ltr,
+              textAlign: TextAlign.start,
+              style: TextStyle(fontSize: 20, fontFamily: "Roboto"),
+            ),
+          );
 
-      case Layout.saleOff:
-        return Consumer<ArticleNotifier>(
-            builder: (context, articleNotifier, child) {
-          if (articleNotifier.isLoading) {
-            return kLoadingWidget(context);
-          }
+        case Layout.bannerImage:
+          return Container(
+              height: 250,
+              width: MediaQuery.of(context).size.width,
+              child: VideoPlayerLive(
+                url: liveurl,
+                placeHolder:
+                    "https://static.mhtn.org/wp-content/uploads/2024/06/04141924/stream-poster.jpg",
+              ));
 
-          if (articleNotifier.errorMessage != null) {
-            return Center(child: Text(articleNotifier.errorMessage!));
-          }
+        case Layout.saleOff:
           List<Article> data = List.from(articleNotifier.articles)
             ..sort((a, b) => a.viewsCount7Days.compareTo(b.viewsCount7Days));
           return Container(
@@ -122,7 +121,6 @@ class DynamicLayout extends StatelessWidget {
                           header.HeaderView(
                             headerText: "Most Popular Posts ⚡️",
                             showSeeAll: false,
-
                           ),
                           StoryWidget(
                             articles: data,
@@ -131,7 +129,7 @@ class DynamicLayout extends StatelessWidget {
                       )),
                 ),
                 Positioned(
-                  bottom: 0,
+                    bottom: 0,
                     child: Container(
                         height: MediaQuery.of(context).size.height * 0.22,
                         width: MediaQuery.of(context).size.width,
@@ -140,11 +138,10 @@ class DynamicLayout extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                          header.HeaderView(
-                             headerText:    "Latest Posts ⚡️",
-                            showSeeAll: false,
-
-                          ),
+                            header.HeaderView(
+                              headerText: "Latest Posts ⚡️",
+                              showSeeAll: false,
+                            ),
                             StoryWidget(
                               articles: articleNotifier.articles,
                             ),
@@ -153,27 +150,16 @@ class DynamicLayout extends StatelessWidget {
               ],
             ),
           );
-        });
 
-      /// FluxNews
-      case Layout.sliderList:
-        return Consumer<ArticleNotifier>(
-            builder: (context, articleNotifier, child) {
-          if (articleNotifier.isLoading) {
-            return Container();
-          }
-
-          if (articleNotifier.errorMessage != null) {
-            return Center(child: Text(articleNotifier.errorMessage!));
-          }
-
+        /// FluxNews
+        case Layout.sliderList:
           return Services()
               .widget
               .renderSliderList(articleNotifier.getDataByCat());
-        });
 
-      default:
-        return const SizedBox();
-    }
+        default:
+          return const SizedBox();
+      }
+    });
   }
 }

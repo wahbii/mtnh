@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
+import '../../models/posts/article_provider.dart';
 import '../../screens/base_screen.dart';
 import 'flux_image.dart';
 
@@ -32,7 +35,19 @@ class StaticSplashScreen extends StatefulWidget {
   BaseScreen<StaticSplashScreen> createState() => _StaticSplashScreenState();
 }
 
+
 class _StaticSplashScreenState extends BaseScreen<StaticSplashScreen> {
+
+  @override
+  void initState() {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      // Assuming ArticleNotifier is a ChangeNotifier
+      final articleNotifier = Provider.of<ArticleNotifier>(context, listen: false);
+      articleNotifier.loadArticles();
+    });
+    super.initState();
+  }
+
   @override
   void afterFirstLayout(BuildContext context) {
     Future.delayed(Duration(milliseconds: widget.duration), () {
@@ -54,7 +69,7 @@ class _StaticSplashScreenState extends BaseScreen<StaticSplashScreen> {
           left: widget.paddingLeft,
           right: widget.paddingRight,
         ),
-        child: LayoutBuilder(
+        child:  LayoutBuilder(
           builder: (context, constraints) {
             return      Image.asset(
                 width: MediaQuery.sizeOf(context).width * 0.6,

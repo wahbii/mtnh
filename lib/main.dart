@@ -126,15 +126,7 @@ void main() {
       }
     }
 
-    if (serverConfig['type'] == 'vendorAdmin') {
-      return runApp(Services()
-          .getVendorAdminApp(languageCode: languageCode, isFromMV: false));
-    }
 
-    if (serverConfig['type'] == 'delivery') {
-      return runApp(Services()
-          .getDeliveryApp(languageCode: languageCode, isFromMV: false));
-    }
 
     ResponsiveSizingConfig.instance.setCustomBreakpoints(
         const ScreenBreakpoints(desktop: 1000, tablet: 600, watch: 100));
