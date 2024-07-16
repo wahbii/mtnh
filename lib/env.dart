@@ -223,17 +223,22 @@ Map<String, dynamic> environment = {
       {
         "name": "Youtube",
         "icon": "assets/icons/brands/youtube.svg",
-        "url": "https://www.youtube.com/inspireui?sub_confirmation=1"
+        "url": "https://www.youtube.com/@MentalHealthTelevisionNetwork"
       },
       {
         "name": "Facebook",
         "icon": "assets/icons/brands/facebook.svg",
-        "url": "https://www.facebook.com/inspireUI/"
+        "url": "https://www.facebook.com/mentalhealthtvnetwork"
       },
       {
         "name": "Twitter",
         "icon": "assets/icons/brands/twitter.svg",
-        "url": "https://twitter.com/InspireUI"
+        "url": "https://twitter.com/mentalhealthtvn"
+      },
+      {
+        'name': 'Instagram',
+        'icon': 'assets/icons/logins/instagram.png',
+        'url': 'https://www.instagram.com/mentalhealthtvnetwork/'
       },
     ],
 

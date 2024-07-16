@@ -47,7 +47,7 @@ class DynamicLayout extends StatelessWidget {
     return Consumer<ArticleNotifier>(
         builder: (context, articleNotifier, child) {
       if (articleNotifier.isLoading) {
-        return kLoadingWidget(context);
+        return Container();
       }
 
       if (articleNotifier.errorMessage != null) {

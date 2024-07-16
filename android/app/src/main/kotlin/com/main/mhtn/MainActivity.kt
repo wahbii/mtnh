@@ -9,6 +9,7 @@ class MainActivity : FlutterActivity() {
     override fun onResume() {
         super.onResume()
         closeAllNotifications()
+
     }
 
     private fun closeAllNotifications() {

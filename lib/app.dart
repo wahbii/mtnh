@@ -519,7 +519,7 @@ class AppState extends State<App>
                       child: Material(
                         child: Column(
                           children: [
-                            Expanded(child: widget!),
+                           Expanded(child: widget!),
                           //  if (!ServerConfig().isBuilder)
                              // Services().advertisement.getAdWidget(),
                           ],

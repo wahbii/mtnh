@@ -171,14 +171,24 @@ class DefaultConfig {
 
     'SocialConnectUrl': [
       {
-        'name': 'Facebook',
-        'icon': 'assets/icons/logins/facebook.png',
-        'url': 'https://www.facebook.com/inspireui'
+        "name": "Youtube",
+        "icon": "assets/icons/brands/youtube.svg",
+        "url": "https://www.youtube.com/@MentalHealthTelevisionNetwork"
+      },
+      {
+        "name": "Facebook",
+        "icon": "assets/icons/brands/facebook.svg",
+        "url": "https://www.facebook.com/mentalhealthtvnetwork"
+      },
+      {
+        "name": "Twitter",
+        "icon": "assets/icons/brands/twitter.svg",
+        "url": "https://twitter.com/mentalhealthtvn"
       },
       {
         'name': 'Instagram',
         'icon': 'assets/icons/logins/instagram.png',
-        'url': 'https://www.instagram.com/inspireui9/'
+        'url': 'https://www.instagram.com/mentalhealthtvnetwork/'
       },
     ],
 

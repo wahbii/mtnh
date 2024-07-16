@@ -129,6 +129,38 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.7"
+  bonsoir:
+    dependency: transitive
+    description:
+      name: bonsoir
+      sha256: "800d77c0581fff06cc43ef2b7723dfe5ee9b899ab0fdf80fb1c7b8829a5deb5c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0+1"
+  bonsoir_android:
+    dependency: transitive
+    description:
+      name: bonsoir_android
+      sha256: "7207c36fd7e0f3c7c2d8cf353f02bd640d96e2387d575837f8ac051c9cbf4aa7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0+1"
+  bonsoir_darwin:
+    dependency: transitive
+    description:
+      name: bonsoir_darwin
+      sha256: "7211042c85da2d6efa80c0976bbd9568f2b63624097779847548ed4530675ade"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
+  bonsoir_platform_interface:
+    dependency: transitive
+    description:
+      name: bonsoir_platform_interface
+      sha256: "64d57cd52bd477b4891e9b9d419e6408da171ed9e0efc8aa716e7e343d5d93ad"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -241,6 +273,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.2.1"
+  cast:
+    dependency: "direct main"
+    description:
+      name: cast
+      sha256: b70f6be547a53481dffec93ad3cc4974fae5ed707f0b677d4a50c329d7299b98
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   characters:
     dependency: transitive
     description:
@@ -321,6 +361,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.18.0"
+  connectivity_plus:
+    dependency: transitive
+    description:
+      name: connectivity_plus
+      sha256: "77a180d6938f78ca7d2382d2240eb626c0f6a735d0bfdce227d8ffb80f95c48b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.2"
+  connectivity_plus_platform_interface:
+    dependency: transitive
+    description:
+      name: connectivity_plus_platform_interface
+      sha256: cf1d1c28f4416f8c654d7dc3cd638ec586076255d407cef3ddbdaf178272a71a
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.4"
   convert:
     dependency: transitive
     description:
@@ -730,6 +786,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.0"
+  floating_draggable_widget:
+    dependency: "direct main"
+    description:
+      name: floating_draggable_widget
+      sha256: f701f4c77f7c47ec75e62d0625eab675a0b063e4bf6b32e77af75e5a8fe090e7
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.5"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -1969,6 +2033,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.0.11"
+  nm:
+    dependency: transitive
+    description:
+      name: nm
+      sha256: "2c9aae4127bdc8993206464fcc063611e0e36e72018696cd9631023a31b24254"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.5.0"
   normalize:
     dependency: transitive
     description:
@@ -2235,6 +2307,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.5.1"
+  protobuf:
+    dependency: transitive
+    description:
+      name: protobuf
+      sha256: "68645b24e0716782e58948f8467fd42a880f255096a821f9e7d0ec625b00c84d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.0"
   provider:
     dependency: "direct main"
     description:

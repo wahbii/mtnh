@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:floating_draggable_widget/floating_draggable_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -9,6 +10,7 @@ import '../../../../generated/l10n.dart';
 import '../../../../models/blog_search_model.dart';
 import '../../../../models/posts/article_provider.dart';
 import '../../../../models/posts/search_provider.dart';
+import '../../../../modules/dynamic_layout/video_player/video_player.dart';
 import '../../../../screens/common/app_bar_mixin.dart';
 import '../../../../screens/search/widgets/search_empty_result.dart';
 import '../widgets/blog_list.dart';
@@ -27,8 +29,8 @@ class BlogSearchScreen extends StatefulWidget {
 }
 
 class _StateSearchScreen extends State<BlogSearchScreen> with AppBarMixin {
-  bool isVisibleSearch = false;
-  String searchText = '';
+  ValueNotifier<String> searchText = ValueNotifier<String>(""); // Example initialization
+
   var textController = TextEditingController();
   Timer? _timer;
   late FocusNode _focus;
@@ -37,7 +39,7 @@ class _StateSearchScreen extends State<BlogSearchScreen> with AppBarMixin {
   void initState() {
     super.initState();
     _focus = FocusNode();
-    _focus.addListener(_onFocusChange);
+   // _focus.addListener(_onFocusChange);
   }
 
   @override
@@ -48,19 +50,16 @@ class _StateSearchScreen extends State<BlogSearchScreen> with AppBarMixin {
     super.dispose();
   }
 
-  void _onFocusChange() {
-    setState(() {
-      isVisibleSearch = _focus.hasFocus;
-    });
-  }
+
 
   Widget _renderSearchLayout() {
-    return searchText.isEmpty
-        ? BlogRecentSearch(
+    return
+      ValueListenableBuilder<String>(
+        builder: (BuildContext context, String value, Widget? child) {
+          return  searchText.value.isEmpty
+              ? BlogRecentSearch(
             onTap: (text) {
-              setState(() {
-                searchText = text;
-              });
+              searchText.value = text;
               textController.text = text;
               FocusScope.of(context)
                   .requestFocus(FocusNode()); //dismiss keyboard
@@ -70,7 +69,7 @@ class _StateSearchScreen extends State<BlogSearchScreen> with AppBarMixin {
               );
             },
           )
-        : Consumer<SearchNotifier>(builder: (context, articleNotifier, child) {
+              : Consumer<SearchNotifier>(builder: (context, articleNotifier, child) {
             if (articleNotifier.isLoadingSearch) {
               return kLoadingWidget(context);
             }
@@ -88,7 +87,6 @@ class _StateSearchScreen extends State<BlogSearchScreen> with AppBarMixin {
             } else {
               return Column(
                 children: <Widget>[
-
                   Expanded(
                     child: Container(
                       decoration: BoxDecoration(
@@ -102,7 +100,11 @@ class _StateSearchScreen extends State<BlogSearchScreen> with AppBarMixin {
               );
             }
             return Container();
-          });
+          });},
+        valueListenable: searchText,
+      );
+
+
   }
 
   AppBar? renderAppBar() {
@@ -134,89 +136,104 @@ class _StateSearchScreen extends State<BlogSearchScreen> with AppBarMixin {
 
   @override
   Widget build(BuildContext context) {
-    return renderScaffold(
-      routeName: RouteList.search,
-      secondAppBar: renderAppBar(),
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      resizeToAvoidBottomInset: false,
-      child: Column(
-        children: <Widget>[
-          if (!Navigator.canPop(context)) ...[
-            AnimatedContainer(
-              height: isVisibleSearch ? 0 : 40,
-              padding: const EdgeInsets.only(left: 15, top: 10),
-              duration: const Duration(milliseconds: 250),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  Text(S.of(context).search,
-                      style: const TextStyle(
-                          fontSize: 28, fontWeight: FontWeight.bold)),
-                ],
-              ),
-            ),
-            const SizedBox(
-              height: 10.0,
-            ),
-          ],
-          Row(children: [
-            Expanded(
-              child: Container(
-                height: 40,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColorLight,
-                  borderRadius: BorderRadius.circular(20),
+    final liveurl = context.read<ArticleNotifier>().getLiveUrl();
+
+    return FloatingDraggableWidget(
+        floatingWidget:  VideoPlayerLive(
+          url: liveurl,
+          placeHolder:
+              "https://static.mhtn.org/wp-content/uploads/2024/06/04141924/stream-poster.jpg",
+        ),
+        floatingWidgetWidth: MediaQuery.of(context).size.width * 0.6,
+        floatingWidgetHeight: MediaQuery.of(context).size.height * 0.18,
+        mainScreenWidget: renderScaffold(
+          routeName: RouteList.search,
+          secondAppBar: renderAppBar(),
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          resizeToAvoidBottomInset: false,
+          child: Column(
+            children: <Widget>[
+              if (!Navigator.canPop(context)) ...[
+                AnimatedContainer(
+                  height:  40,
+                  padding: const EdgeInsets.only(left: 15, top: 10),
+                  duration: const Duration(milliseconds: 250),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      Text(S.of(context).search,
+                          style: const TextStyle(
+                              fontSize: 28, fontWeight: FontWeight.bold)),
+                    ],
+                  ),
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                margin: const EdgeInsets.only(left: 10, right: 10, bottom: 15),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    const Icon(
-                      Icons.search,
-                      color: Colors.black45,
+                const SizedBox(
+                  height: 10.0,
+                ),
+              ],
+              Row(children: [
+                Expanded(
+                  child: Container(
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColorLight,
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: TextField(
-                        controller: textController,
-                        focusNode: _focus,
-                        onChanged: (text) {
-
-                              setState(() {
-                                searchText = text;
-                              });
-
-                        },
-                        decoration: InputDecoration(
-                          fillColor: Theme.of(context).colorScheme.secondary,
-                          border: InputBorder.none,
-                          hintText: S.of(context).searchForItems,
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    margin:
+                        const EdgeInsets.only(left: 10, right: 10, bottom: 15),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        const Icon(
+                          Icons.search,
+                          color: Colors.black45,
                         ),
-                      ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: TextField(
+                            controller: textController,
+                            onChanged: (text) {
+                                searchText.value = text;
+                            },
+                            decoration: InputDecoration(
+                              fillColor:
+                                  Theme.of(context).colorScheme.secondary,
+                              border: InputBorder.none,
+                              hintText: S.of(context).searchForItems,
+                            ),
+                          ),
+                        ),
+                        InkWell(
+                          child: Container(
+                            padding: EdgeInsets.only(
+                                left: 10, right: 10, top: 5, bottom: 5),
+                            width: 70,
+                            child: Text(
+                              "search",
+                              style: TextStyle(fontWeight: FontWeight.w700),
+                            ),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                color: Colors.white),
+                          ),
+                          onTap: () {
+                            if (searchText.value.isNotEmpty) {
+                              context
+                                  .read<SearchNotifier>()
+                                  .searcharticles(searchText.value);
+                            }
+                            ;
+                          },
+                        )
+                      ],
                     ),
-                    InkWell(child: Container(
-                      padding: EdgeInsets.only(left:  10,right: 10,top: 5,bottom: 5),
-                      width: 70,
-                      child: Text("search",style: TextStyle(fontWeight: FontWeight.w700),),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: Colors.white),
-                    ),onTap: (){
-                      if(searchText.isNotEmpty){
-                        context
-                            .read<SearchNotifier>()
-                            .searcharticles(searchText);
-                      };
-                    },)
-                  ],
+                  ),
                 ),
-              ),
-            ),
-          ]),
-          Expanded(child: _renderSearchLayout()),
-        ],
-      ),
-    );
+              ]),
+              Expanded(child: _renderSearchLayout()),
+            ],
+          ),
+        ));
   }
 }
